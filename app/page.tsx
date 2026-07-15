@@ -1,13 +1,16 @@
+"use client";
+
 import Link from "next/link";
 import DishCard from "@/components/DishCard";
 import Reveal from "@/components/Reveal";
 import StatCounter from "@/components/StatCounter";
+import { useRegion } from "@/lib/region-context";
 import { dishes } from "@/lib/menu-data";
 
 const featured = dishes.filter((d) => d.tier === "premium-ritual").slice(0, 3);
 
-const regions = ["Mumbai", "Punjab", "Rajasthan", "Goa", "Gujarat", "Delhi", "Kolkata"];
-const tickerItems = [...regions, ...regions];
+const storyRegions = ["Mumbai", "Punjab", "Rajasthan", "Goa", "Gujarat", "Delhi", "Kolkata"];
+const tickerItems = [...storyRegions, ...storyRegions];
 
 const features = [
   {
@@ -28,6 +31,8 @@ const features = [
 ];
 
 export default function Home() {
+  const { region } = useRegion();
+
   return (
     <div>
       {/* Hero */}
@@ -43,7 +48,7 @@ export default function Home() {
         <div className="relative mx-auto max-w-6xl px-4 py-24 text-center sm:px-6 sm:py-32">
           <p className="inline-flex items-center gap-2 rounded-full border border-espresso/10 bg-white px-4 py-1.5 text-xs font-semibold uppercase tracking-wide text-espresso/70">
             <span className="h-1.5 w-1.5 rounded-full bg-basil" />
-            Nadiad, Gujarat &middot; 100% Vegetarian
+            {region.label} &middot; 100% Vegetarian
           </p>
           <h1 className="font-display mt-6 text-5xl font-bold leading-[1.05] text-espresso sm:text-7xl">
             Craving something

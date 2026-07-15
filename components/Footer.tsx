@@ -1,6 +1,11 @@
+"use client";
+
 import { SandwichIcon } from "@/components/icons";
+import { useRegion } from "@/lib/region-context";
 
 export default function Footer() {
+  const { region } = useRegion();
+
   return (
     <footer className="border-t border-espresso/10 bg-espresso text-cream">
       <div className="mx-auto flex max-w-6xl flex-col gap-4 px-4 py-10 sm:px-6 md:flex-row md:items-center md:justify-between">
@@ -14,7 +19,9 @@ export default function Footer() {
           </p>
         </div>
         <div className="text-sm text-cream/60">
-          <p>Nadiad, Gujarat, India</p>
+          <p>
+            {region.label}, {region.country}
+          </p>
           <p className="mt-1">&copy; {new Date().getFullYear()} SnackIt. All rights reserved.</p>
         </div>
       </div>

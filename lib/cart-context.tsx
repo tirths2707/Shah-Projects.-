@@ -10,8 +10,13 @@ import {
   type ReactNode,
 } from "react";
 import type { CartLineItem } from "./types";
+import type { RegionId } from "./regions";
 
 const STORAGE_KEY = "snackit-cart";
+
+export function cartSubtotal(items: CartLineItem[], regionId: RegionId): number {
+  return items.reduce((sum, i) => sum + i.unitPrice[regionId] * i.quantity, 0);
+}
 
 interface CartContextValue {
   items: CartLineItem[];
@@ -19,7 +24,6 @@ interface CartContextValue {
   removeItem: (id: string) => void;
   updateQuantity: (id: string, quantity: number) => void;
   clearCart: () => void;
-  subtotalInr: number;
   itemCount: number;
 }
 
@@ -72,16 +76,11 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
   const clearCart = useCallback(() => setItems([]), []);
 
-  const subtotalInr = useMemo(
-    () => items.reduce((sum, i) => sum + i.unitPriceInr * i.quantity, 0),
-    [items],
-  );
-
   const itemCount = useMemo(() => items.reduce((sum, i) => sum + i.quantity, 0), [items]);
 
   return (
     <CartContext.Provider
-      value={{ items, addItem, removeItem, updateQuantity, clearCart, subtotalInr, itemCount }}
+      value={{ items, addItem, removeItem, updateQuantity, clearCart, itemCount }}
     >
       {children}
     </CartContext.Provider>

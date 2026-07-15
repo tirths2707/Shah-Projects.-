@@ -2,11 +2,15 @@
 
 import { useMemo, useState } from "react";
 import { useCart } from "@/lib/cart-context";
+import { useRegion } from "@/lib/region-context";
 import { breadFormats, byoBases, byoFlavorTosses } from "@/lib/menu-data";
+import { formatPrice, regions } from "@/lib/regions";
+import type { RegionalPrice } from "@/lib/types";
 import { FormatIcon } from "@/components/icons";
 
 export default function BuildYourOwnPage() {
   const { addItem } = useCart();
+  const { regionId } = useRegion();
   const [baseId, setBaseId] = useState(byoBases[0].id);
   const [formatId, setFormatId] = useState(breadFormats[0].id);
   const [flavorId, setFlavorId] = useState(byoFlavorTosses[0].id);
@@ -16,15 +20,21 @@ export default function BuildYourOwnPage() {
   const format = breadFormats.find((f) => f.id === formatId)!;
   const flavor = byoFlavorTosses.find((f) => f.id === flavorId)!;
 
-  const totalPrice = useMemo(() => format.basePriceInr + flavor.addOnInr, [format, flavor]);
+  const totalPriceByRegion: RegionalPrice = useMemo(() => {
+    const result = {} as RegionalPrice;
+    for (const id of Object.keys(regions) as (keyof RegionalPrice)[]) {
+      result[id] = format.basePrice[id] + flavor.addOn[id];
+    }
+    return result;
+  }, [format, flavor]);
 
   function handleAdd() {
     addItem({
       id: `byo-${baseId}-${formatId}-${flavorId}`,
       name: `Build Your Own — ${base.label}`,
       format: format.id,
-      unitPriceInr: totalPrice,
-      isRitual: flavor.addOnInr > 0,
+      unitPrice: totalPriceByRegion,
+      isRitual: flavor.addOn[regionId] > 0,
       detail: `${format.label} · ${flavor.label} toss`,
     });
     setAdded(true);
@@ -88,7 +98,7 @@ export default function BuildYourOwnPage() {
                     formatId === f.id ? "text-white/70" : "text-espresso/50"
                   }`}
                 >
-                  ₹{f.basePriceInr}
+                  {formatPrice(f.basePrice[regionId], regionId)}
                 </div>
               </button>
             ))}
@@ -110,9 +120,9 @@ export default function BuildYourOwnPage() {
               >
                 <div className="flex items-center justify-between font-semibold">
                   <span>{f.label}</span>
-                  {f.addOnInr > 0 && (
+                  {f.addOn[regionId] > 0 && (
                     <span className={flavorId === f.id ? "text-white" : "text-coral"}>
-                      +₹{f.addOnInr}
+                      +{formatPrice(f.addOn[regionId], regionId)}
                     </span>
                   )}
                 </div>
@@ -151,7 +161,9 @@ export default function BuildYourOwnPage() {
           </p>
         </div>
         <div className="flex items-center justify-between gap-4 border-t border-espresso/10 pt-4 sm:border-t-0 sm:pt-0">
-          <span className="text-2xl font-bold text-espresso">₹{totalPrice}</span>
+          <span className="text-2xl font-bold text-espresso">
+            {formatPrice(totalPriceByRegion[regionId], regionId)}
+          </span>
           <button
             type="button"
             onClick={handleAdd}

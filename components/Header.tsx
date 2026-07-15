@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { useCart } from "@/lib/cart-context";
 import { SandwichIcon } from "@/components/icons";
+import RegionSwitcher from "@/components/RegionSwitcher";
 
 const navLinks = [
   { href: "/menu", label: "Menu" },
@@ -40,6 +41,9 @@ export default function Header() {
         </nav>
 
         <div className="flex items-center gap-3">
+          <div className="hidden sm:block">
+            <RegionSwitcher />
+          </div>
           <Link
             href="/cart"
             className="relative rounded-full bg-espresso px-4 py-2 text-sm font-semibold text-white transition hover:bg-coral"
@@ -68,7 +72,10 @@ export default function Header() {
       </div>
 
       {open && (
-        <nav className="flex flex-col gap-1 border-t border-espresso/10 px-4 pb-4 md:hidden">
+        <nav className="flex flex-col gap-3 border-t border-espresso/10 px-4 pb-4 md:hidden">
+          <div className="pt-3 sm:hidden">
+            <RegionSwitcher />
+          </div>
           {navLinks.map((link) => (
             <Link
               key={link.href}

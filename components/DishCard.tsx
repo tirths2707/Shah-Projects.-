@@ -2,12 +2,15 @@
 
 import { useState } from "react";
 import { useCart } from "@/lib/cart-context";
+import { useRegion } from "@/lib/region-context";
 import { accentForDish } from "@/lib/menu-data";
+import { formatPrice } from "@/lib/regions";
 import { FormatIcon } from "@/components/icons";
 import type { Dish } from "@/lib/types";
 
 export default function DishCard({ dish }: { dish: Dish }) {
   const { addItem } = useCart();
+  const { regionId } = useRegion();
   const [added, setAdded] = useState(false);
 
   function handleAdd() {
@@ -15,7 +18,7 @@ export default function DishCard({ dish }: { dish: Dish }) {
       id: dish.id,
       name: dish.name,
       format: dish.format,
-      unitPriceInr: dish.priceInr,
+      unitPrice: dish.price,
       isRitual: dish.tier === "premium-ritual",
     });
     setAdded(true);
@@ -72,7 +75,9 @@ export default function DishCard({ dish }: { dish: Dish }) {
         )}
 
         <div className="mt-auto flex items-center justify-between pt-3">
-          <span className="text-lg font-bold text-espresso">₹{dish.priceInr}</span>
+          <span className="text-lg font-bold text-espresso">
+            {formatPrice(dish.price[regionId], regionId)}
+          </span>
           <button
             type="button"
             onClick={handleAdd}

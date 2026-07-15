@@ -1,11 +1,15 @@
 "use client";
 
 import Link from "next/link";
-import { useCart } from "@/lib/cart-context";
+import { useCart, cartSubtotal } from "@/lib/cart-context";
+import { useRegion } from "@/lib/region-context";
+import { formatPrice } from "@/lib/regions";
 import { FormatIcon } from "@/components/icons";
 
 export default function CartPage() {
-  const { items, updateQuantity, removeItem, subtotalInr } = useCart();
+  const { items, updateQuantity, removeItem } = useCart();
+  const { regionId } = useRegion();
+  const subtotal = cartSubtotal(items, regionId);
 
   if (items.length === 0) {
     return (
@@ -36,7 +40,9 @@ export default function CartPage() {
             <div className="flex-1">
               <p className="font-display text-sm font-semibold text-espresso">{item.name}</p>
               {item.detail && <p className="mt-0.5 text-xs text-espresso/50">{item.detail}</p>}
-              <p className="mt-1 text-sm font-medium text-coral">₹{item.unitPriceInr}</p>
+              <p className="mt-1 text-sm font-medium text-coral">
+                {formatPrice(item.unitPrice[regionId], regionId)}
+              </p>
             </div>
 
             <div className="flex items-center gap-2">
@@ -62,7 +68,7 @@ export default function CartPage() {
             </div>
 
             <p className="w-20 text-right text-sm font-bold text-espresso">
-              ₹{item.unitPriceInr * item.quantity}
+              {formatPrice(item.unitPrice[regionId] * item.quantity, regionId)}
             </p>
 
             <button
@@ -79,7 +85,7 @@ export default function CartPage() {
 
       <div className="mt-8 flex items-center justify-between rounded-2xl bg-espresso/[0.04] px-6 py-5">
         <span className="font-display text-lg font-semibold text-espresso">Subtotal</span>
-        <span className="text-2xl font-bold text-coral">₹{subtotalInr}</span>
+        <span className="text-2xl font-bold text-coral">{formatPrice(subtotal, regionId)}</span>
       </div>
 
       <div className="mt-6 flex flex-wrap justify-between gap-4">

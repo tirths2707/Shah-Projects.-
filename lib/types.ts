@@ -1,6 +1,13 @@
+import type { RegionId } from "./regions";
+
 export type BreadFormat = "classic-grilled" | "pita-pocket" | "sub-roll";
 
 export type DishTier = "standard" | "premium-ritual";
+
+// Price per market region (RegionId, e.g. "nadiad-in" / "calgary-ca") — not
+// to be confused with `Dish.region`, which is the dish's regional-story
+// origin in India (e.g. "Mumbai, Maharashtra").
+export type RegionalPrice = Record<RegionId, number>;
 
 export interface Dish {
   id: string;
@@ -12,14 +19,14 @@ export interface Dish {
   phrase: string;
   story: string;
   ritual?: string;
-  priceInr: number;
+  price: RegionalPrice;
 }
 
 export interface BreadFormatInfo {
   id: BreadFormat;
   label: string;
   description: string;
-  basePriceInr: number;
+  basePrice: RegionalPrice;
 }
 
 export interface ByoBase {
@@ -33,14 +40,14 @@ export interface ByoFlavorToss {
   region: string;
   phrase: string;
   ritual: string;
-  addOnInr: number;
+  addOn: RegionalPrice;
 }
 
 export interface CartLineItem {
   id: string;
   name: string;
   format: BreadFormat;
-  unitPriceInr: number;
+  unitPrice: RegionalPrice;
   quantity: number;
   isRitual: boolean;
   detail?: string;

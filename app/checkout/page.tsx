@@ -3,13 +3,16 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import Link from "next/link";
-import { useCart } from "@/lib/cart-context";
+import { useCart, cartSubtotal } from "@/lib/cart-context";
+import { useRegion } from "@/lib/region-context";
 import { supabase } from "@/lib/supabase";
+import { formatPrice } from "@/lib/regions";
 import { FormatIcon } from "@/components/icons";
 
 export default function CheckoutPage() {
   const router = useRouter();
-  const { items, subtotalInr, clearCart } = useCart();
+  const { items, clearCart } = useCart();
+  const { region, regionId } = useRegion();
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
@@ -17,31 +20,59 @@ export default function CheckoutPage() {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  const subtotal = cartSubtotal(items, regionId);
+
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (items.length === 0) return;
     setSubmitting(true);
     setError(null);
 
-    const { error: insertError } = await supabase.from("orders").insert({
-      customer_name: name,
-      phone,
-      email: email || null,
-      items,
-      subtotal: subtotalInr,
-      total: subtotalInr,
-      special_instructions: notes || null,
-    });
+    const { data: order, error: insertError } = await supabase
+      .from("orders")
+      .insert({
+        customer_name: name,
+        phone,
+        email: email || null,
+        items,
+        subtotal,
+        total: subtotal,
+        special_instructions: notes || null,
+        region: regionId,
+        currency: region.currency,
+        pickup_location: region.label,
+        payment_status: region.paymentMode === "online" ? "pending" : "unpaid",
+      })
+      .select()
+      .single();
 
-    setSubmitting(false);
-
-    if (insertError) {
+    if (insertError || !order) {
+      setSubmitting(false);
       setError("Something went wrong placing your order. Please try again.");
       return;
     }
 
-    clearCart();
-    router.push("/order-confirmed");
+    if (region.paymentMode === "in-store") {
+      clearCart();
+      router.push("/order-confirmed");
+      return;
+    }
+
+    // Online payment: hand off to Stripe Checkout.
+    try {
+      const res = await fetch("/api/checkout/session", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ orderId: order.id, items, regionId }),
+      });
+      const data = await res.json();
+      if (!res.ok || !data.url) throw new Error(data.error ?? "Could not start payment.");
+      clearCart();
+      window.location.assign(data.url);
+    } catch (err) {
+      setSubmitting(false);
+      setError(err instanceof Error ? err.message : "Could not start payment. Please try again.");
+    }
   }
 
   const inputClass =
@@ -65,9 +96,7 @@ export default function CheckoutPage() {
   return (
     <div className="mx-auto max-w-3xl px-4 py-14 sm:px-6">
       <h1 className="font-display text-4xl font-bold text-espresso">Checkout</h1>
-      <p className="mt-2 text-sm text-espresso/60">
-        Orders are for pickup at our Nadiad, Gujarat location. Pay in-store on collection.
-      </p>
+      <p className="mt-2 text-sm text-espresso/60">{region.pickupLine}</p>
 
       <div className="mt-8 grid gap-10 md:grid-cols-[1.5fr_1fr]">
         <form onSubmit={handleSubmit} className="space-y-5">
@@ -100,11 +129,12 @@ export default function CheckoutPage() {
 
           <div>
             <label htmlFor="email" className={labelClass}>
-              Email (optional)
+              Email {region.paymentMode === "online" ? "" : "(optional)"}
             </label>
             <input
               id="email"
               type="email"
+              required={region.paymentMode === "online"}
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               className={inputClass}
@@ -131,7 +161,13 @@ export default function CheckoutPage() {
             disabled={submitting}
             className="w-full rounded-full bg-coral px-6 py-3 text-sm font-bold text-white transition hover:-translate-y-0.5 hover:bg-coral-dark disabled:opacity-60"
           >
-            {submitting ? "Placing order…" : `Place order — ₹${subtotalInr}`}
+            {submitting
+              ? region.paymentMode === "online"
+                ? "Redirecting to payment…"
+                : "Placing order…"
+              : region.paymentMode === "online"
+                ? `Pay ${formatPrice(subtotal, regionId)}`
+                : `Place order — ${formatPrice(subtotal, regionId)}`}
           </button>
         </form>
 
@@ -147,14 +183,14 @@ export default function CheckoutPage() {
                   <span>
                     {item.quantity}× {item.name}
                   </span>
-                  <span>₹{item.unitPriceInr * item.quantity}</span>
+                  <span>{formatPrice(item.unitPrice[regionId] * item.quantity, regionId)}</span>
                 </div>
               </div>
             ))}
           </div>
           <div className="mt-4 flex justify-between border-t border-espresso/10 pt-4 text-base font-bold text-espresso">
             <span>Total</span>
-            <span className="text-coral">₹{subtotalInr}</span>
+            <span className="text-coral">{formatPrice(subtotal, regionId)}</span>
           </div>
         </div>
       </div>

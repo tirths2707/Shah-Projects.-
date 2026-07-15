@@ -1,33 +1,42 @@
-import type { BreadFormatInfo, ByoBase, ByoFlavorToss, Dish } from "./types";
+import type { BreadFormatInfo, ByoBase, ByoFlavorToss, Dish, RegionalPrice } from "./types";
 
-// NOTE: All prices below are launch-estimate placeholders (not in the brand
-// guide, which only specifies the +₹10-15 Premium Ritual add-on). Swap
-// `priceInr` / `basePriceInr` / `addOnInr` for real numbers once pricing is
-// locked for the Nadiad location.
+// NOTE: All prices below are launch-estimate placeholders.
+// - INR (nadiad-in) prices reflect the brand guide, which only specifies
+//   the +₹10-15 Premium Ritual add-on for real numbers.
+// - CAD (calgary-ca) prices are rough Calgary quick-serve benchmarks, not
+//   numbers from the business — swap them out once real Calgary pricing is
+//   provided.
 //
 // Dish cards use a gradient tile + format icon (components/icons.tsx) as a
 // stand-in for real food photography — no external image host is reachable
 // from this build environment. Swap in real photos later by adding an
 // `image` field and using it in DishCard.
 
+const CLASSIC: RegionalPrice = { "nadiad-in": 89, "calgary-ca": 8.99 };
+const CLASSIC_RITUAL: RegionalPrice = { "nadiad-in": 104, "calgary-ca": 10.49 };
+const POCKET: RegionalPrice = { "nadiad-in": 99, "calgary-ca": 9.99 };
+const POCKET_RITUAL: RegionalPrice = { "nadiad-in": 114, "calgary-ca": 11.49 };
+const SUB: RegionalPrice = { "nadiad-in": 139, "calgary-ca": 12.99 };
+const SUB_RITUAL: RegionalPrice = { "nadiad-in": 154, "calgary-ca": 14.49 };
+
 export const breadFormats: BreadFormatInfo[] = [
   {
     id: "classic-grilled",
     label: "Classic Grilled Sandwich",
     description: "Sliced bread, triangle-cut",
-    basePriceInr: 89,
+    basePrice: CLASSIC,
   },
   {
     id: "pita-pocket",
     label: "Pita Pocket",
     description: "Signature pressed format",
-    basePriceInr: 99,
+    basePrice: POCKET,
   },
   {
     id: "sub-roll",
     label: "Sub Roll",
     description: "Hero-sized, loaded",
-    basePriceInr: 139,
+    basePrice: SUB,
   },
 ];
 
@@ -42,7 +51,7 @@ export const dishes: Dish[] = [
     region: "Mumbai, Maharashtra",
     phrase: "Amchi Mumbai",
     story: "The sandwich born on Mumbai's street corners, sold from carts since the 1970s.",
-    priceInr: 89,
+    price: CLASSIC,
   },
   {
     id: "paneer-tikka-blaze",
@@ -53,7 +62,7 @@ export const dishes: Dish[] = [
     region: "Punjab",
     phrase: "Rangla Punjab",
     story: "The tandoor tradition, grilled and golden, no clay oven required.",
-    priceInr: 89,
+    price: CLASSIC,
   },
   {
     id: "cheese-chutney-melt",
@@ -66,7 +75,7 @@ export const dishes: Dish[] = [
     story: "The after-school classic every Indian kid grew up ordering.",
     ritual:
       "Comes with a food-safe Cheese Vial (syringe) and a marked slit in the sandwich — press the plunger yourself before the first bite.",
-    priceInr: 104,
+    price: CLASSIC_RITUAL,
   },
   {
     id: "corn-cheese-toast",
@@ -77,7 +86,7 @@ export const dishes: Dish[] = [
     region: "Mumbai, Maharashtra",
     phrase: "Amchi Mumbai",
     story: "A monsoon-season favorite from Mumbai's roadside stalls.",
-    priceInr: 89,
+    price: CLASSIC,
   },
   {
     id: "schezwan-veggie-toast",
@@ -88,7 +97,7 @@ export const dishes: Dish[] = [
     region: "Mumbai/Kolkata (Indo-Chinese)",
     phrase: "Amchi Mumbai",
     story: "India's love affair with Indo-Chinese flavor.",
-    priceInr: 89,
+    price: CLASSIC,
   },
   {
     id: "tandoori-veggie-grill",
@@ -99,7 +108,7 @@ export const dishes: Dish[] = [
     region: "Punjab/Delhi",
     phrase: "Rangla Punjab",
     story: "Smoky clay-oven flavor, brought to bread.",
-    priceInr: 89,
+    price: CLASSIC,
   },
 
   // Section 2 — Pita Pocket
@@ -112,7 +121,7 @@ export const dishes: Dish[] = [
     region: "Punjab",
     phrase: "Rangla Punjab",
     story: "Punjab's tandoor tradition, folded and sealed.",
-    priceInr: 99,
+    price: POCKET,
   },
   {
     id: "chickpea-pocket",
@@ -123,7 +132,7 @@ export const dishes: Dish[] = [
     region: "North India",
     phrase: "Khaana Khaya?",
     story: "A protein-packed staple across North Indian homes.",
-    priceInr: 99,
+    price: POCKET,
   },
   {
     id: "tofu-bhurji-pocket",
@@ -134,7 +143,7 @@ export const dishes: Dish[] = [
     region: "Pan-India (modern)",
     phrase: "Khaana Khaya?",
     story: "A modern, plant-based twist on classic egg bhurji.",
-    priceInr: 99,
+    price: POCKET,
   },
   {
     id: "dal-makhani-fold",
@@ -147,7 +156,7 @@ export const dishes: Dish[] = [
     story: "Punjab's most celebrated comfort dish, slow-simmered through the night.",
     ritual:
       'Wrapped in parchment sealed with a wax-look sticker stamped "M" — peel it to reveal the story card underneath.',
-    priceInr: 114,
+    price: POCKET_RITUAL,
   },
   {
     id: "achari-paneer-pocket",
@@ -158,7 +167,7 @@ export const dishes: Dish[] = [
     region: "Rajasthan",
     phrase: "Padharo Mhare Desh",
     story: "The tang of Rajasthan's pickle culture, aged in brine for generations.",
-    priceInr: 99,
+    price: POCKET,
   },
 
   // Section 3 — Sub Roll
@@ -171,7 +180,7 @@ export const dishes: Dish[] = [
     region: "Punjab",
     phrase: "Rangla Punjab",
     story: "A hearty, full-size take on the classic tikka.",
-    priceInr: 139,
+    price: SUB,
   },
   {
     id: "schezwan-paneer-sub",
@@ -182,7 +191,7 @@ export const dishes: Dish[] = [
     region: "Mumbai/Kolkata (Indo-Chinese)",
     phrase: "Amchi Mumbai",
     story: "Indo-Chinese heat, sub-sized.",
-    priceInr: 139,
+    price: SUB,
   },
   {
     id: "chickpea-peri-peri-sub",
@@ -193,7 +202,7 @@ export const dishes: Dish[] = [
     region: "Goa",
     phrase: "Kitem Re?",
     story: "Peri-peri arrived in India through Goa's Portuguese trade history.",
-    priceInr: 139,
+    price: SUB,
   },
   {
     id: "dal-makhani-loaded-sub",
@@ -205,7 +214,7 @@ export const dishes: Dish[] = [
     phrase: "Rangla Punjab",
     story: "Punjab's richest comfort food, loaded into a hero-sized sub.",
     ritual: 'Sealed with a wax sticker stamped "Loaded" — the brand\'s signature hero-item mark.',
-    priceInr: 154,
+    price: SUB_RITUAL,
   },
   {
     id: "tandoori-veg-sub",
@@ -216,7 +225,7 @@ export const dishes: Dish[] = [
     region: "Punjab/Delhi",
     phrase: "Rangla Punjab",
     story: "The tandoor tradition, sub-sized.",
-    priceInr: 139,
+    price: SUB,
   },
 ];
 
@@ -227,6 +236,9 @@ export const byoBases: ByoBase[] = [
   { id: "dal-makhani-mash", label: "Dal Makhani Mash" },
 ];
 
+const FLAVOR_ADDON: RegionalPrice = { "nadiad-in": 15, "calgary-ca": 1.5 };
+const NO_ADDON: RegionalPrice = { "nadiad-in": 0, "calgary-ca": 0 };
+
 export const byoFlavorTosses: ByoFlavorToss[] = [
   {
     id: "peri-peri",
@@ -234,7 +246,7 @@ export const byoFlavorTosses: ByoFlavorToss[] = [
     region: "Goa",
     phrase: "Kitem Re?",
     ritual: "Heat dropper, customer-controlled spice",
-    addOnInr: 15,
+    addOn: FLAVOR_ADDON,
   },
   {
     id: "schezwan",
@@ -242,7 +254,7 @@ export const byoFlavorTosses: ByoFlavorToss[] = [
     region: "Mumbai/Kolkata",
     phrase: "Amchi Mumbai",
     ritual: "Fire Vial dropper",
-    addOnInr: 15,
+    addOn: FLAVOR_ADDON,
   },
   {
     id: "tandoori",
@@ -250,7 +262,7 @@ export const byoFlavorTosses: ByoFlavorToss[] = [
     region: "Punjab",
     phrase: "Rangla Punjab",
     ritual: "Clay-toned wax seal, no extra cost",
-    addOnInr: 0,
+    addOn: NO_ADDON,
   },
   {
     id: "achari",
@@ -258,7 +270,7 @@ export const byoFlavorTosses: ByoFlavorToss[] = [
     region: "Rajasthan",
     phrase: "Padharo Mhare Desh",
     ritual: "Pickle-oil potion dropper",
-    addOnInr: 15,
+    addOn: FLAVOR_ADDON,
   },
   {
     id: "plain",
@@ -266,7 +278,7 @@ export const byoFlavorTosses: ByoFlavorToss[] = [
     region: "Nadiad, Gujarat",
     phrase: "Kem Cho",
     ritual: "No ritual — purity is the story",
-    addOnInr: 0,
+    addOn: NO_ADDON,
   },
 ];
 

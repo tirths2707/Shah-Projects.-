@@ -2,8 +2,10 @@
 
 import { useState } from "react";
 import { supabase } from "@/lib/supabase";
+import { useRegion } from "@/lib/region-context";
 
 export default function WaitlistPage() {
+  const { region, regionId } = useRegion();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
@@ -22,7 +24,11 @@ export default function WaitlistPage() {
       phone: phone || null,
       city: city || null,
       interest: "general",
-      source: "website",
+      // Tags which detected/selected market this visitor was on — the
+      // simplest way to see where site traffic is coming from without a
+      // separate analytics dashboard: filter this column in the Supabase
+      // table editor.
+      source: `website-${regionId}`,
     });
 
     setSubmitting(false);
@@ -43,7 +49,7 @@ export default function WaitlistPage() {
           You&rsquo;re on the list
         </h1>
         <p className="mt-3 text-espresso/60">
-          We&rsquo;ll let you know the moment SnackIt opens in Nadiad.
+          We&rsquo;ll let you know the moment SnackIt opens in {region.label}.
         </p>
       </div>
     );
@@ -53,7 +59,7 @@ export default function WaitlistPage() {
     <div className="mx-auto max-w-xl px-4 py-20 sm:px-6">
       <h1 className="font-display text-4xl font-bold text-espresso">Join the waitlist</h1>
       <p className="mt-3 text-espresso/60">
-        Be the first to know when SnackIt opens in Nadiad, Gujarat.
+        Be the first to know when SnackIt opens in {region.label}.
       </p>
 
       <form onSubmit={handleSubmit} className="mt-8 space-y-5">
