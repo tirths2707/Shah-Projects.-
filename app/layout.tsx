@@ -19,10 +19,46 @@ const inter = Inter({
   subsets: ["latin"],
 });
 
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://shah-projects.vercel.app";
+const title = "SnackIt — Craving something real? That's SnackIt.";
+const description =
+  "SnackIt is a quick-serve, vegetarian-first sandwich brand. Signature grilled sandwiches, pita pockets, and sub rolls — or build your own. Nadiad, India and Calgary, Canada.";
+
 export const metadata: Metadata = {
-  title: "SnackIt — Craving something real? That's SnackIt.",
-  description:
-    "SnackIt is a quick-serve, vegetarian-first sandwich brand. Signature grilled sandwiches, pita pockets, and sub rolls — or build your own. Nadiad, India and Calgary, Canada.",
+  metadataBase: new URL(siteUrl),
+  title,
+  description,
+  keywords: [
+    "SnackIt",
+    "vegetarian sandwich",
+    "quick-serve sandwich",
+    "build your own sandwich",
+    "Nadiad food",
+    "Calgary sandwich shop",
+    "Indian sandwich",
+    "pita pocket",
+    "sub roll",
+  ],
+  openGraph: {
+    title,
+    description,
+    url: siteUrl,
+    siteName: "SnackIt",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title,
+    description,
+  },
+  // Fill these in once you've added Search Console / Bing Webmaster Tools
+  // and grabbed the HTML-tag verification code each one gives you.
+  verification: {
+    google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION,
+    other: process.env.NEXT_PUBLIC_BING_SITE_VERIFICATION
+      ? { "msvalidate.01": process.env.NEXT_PUBLIC_BING_SITE_VERIFICATION }
+      : undefined,
+  },
 };
 
 export default async function RootLayout({

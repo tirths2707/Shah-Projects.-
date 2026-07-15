@@ -5,6 +5,8 @@ import { breadFormats, dishesByFormat } from "@/lib/menu-data";
 
 export const metadata = {
   title: "Menu — SnackIt",
+  description:
+    "Sixteen signature vegetarian sandwiches, pita pockets, and sub rolls, each with a regional Indian story. Order for pickup in Nadiad or Calgary.",
 };
 
 export default function MenuPage() {
