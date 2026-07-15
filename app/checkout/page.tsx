@@ -5,6 +5,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { useCart } from "@/lib/cart-context";
 import { supabase } from "@/lib/supabase";
+import { emojiForCartItem } from "@/lib/menu-data";
 
 export default function CheckoutPage() {
   const router = useRouter();
@@ -44,18 +45,16 @@ export default function CheckoutPage() {
   }
 
   const inputClass =
-    "mt-1 w-full border-0 border-b-2 border-parchment/30 bg-transparent px-1 py-2 text-sm text-parchment outline-none focus:border-ember";
-  const labelClass = "font-label block text-xs font-bold uppercase tracking-wide text-parchment/70";
+    "mt-1 w-full rounded-xl border-2 border-espresso/10 bg-cream px-3 py-2.5 text-sm text-espresso outline-none transition focus:border-tomato";
+  const labelClass = "block text-xs font-bold uppercase tracking-wide text-espresso/50";
 
   if (items.length === 0) {
     return (
       <div className="mx-auto max-w-3xl px-4 py-20 text-center sm:px-6">
-        <h1 className="font-display text-3xl font-black uppercase text-parchment">
-          Your cart is empty
-        </h1>
+        <h1 className="font-display text-3xl font-bold text-espresso">Your cart is empty</h1>
         <Link
           href="/menu"
-          className="mt-6 inline-block border-2 border-ember bg-ember px-6 py-3 font-label text-sm font-bold uppercase tracking-wide text-cocoa transition hover:bg-cocoa hover:text-ember"
+          className="mt-6 inline-block rounded-full bg-tomato px-6 py-3 text-sm font-bold text-white transition hover:-translate-y-0.5 hover:bg-tomato-dark"
         >
           Browse the menu
         </Link>
@@ -65,13 +64,13 @@ export default function CheckoutPage() {
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-14 sm:px-6">
-      <h1 className="font-display text-4xl font-black uppercase text-parchment">Checkout</h1>
-      <p className="mt-2 text-sm text-parchment/60">
+      <h1 className="font-display text-4xl font-bold text-espresso">Checkout</h1>
+      <p className="mt-2 text-sm text-espresso/60">
         Orders are for pickup at our Nadiad, Gujarat location. Pay in-store on collection.
       </p>
 
       <div className="mt-8 grid gap-10 md:grid-cols-[1.5fr_1fr]">
-        <form onSubmit={handleSubmit} className="space-y-6">
+        <form onSubmit={handleSubmit} className="space-y-5">
           <div>
             <label htmlFor="name" className={labelClass}>
               Name
@@ -125,34 +124,37 @@ export default function CheckoutPage() {
             />
           </div>
 
-          {error && <p className="text-sm text-ember">{error}</p>}
+          {error && <p className="text-sm text-tomato">{error}</p>}
 
           <button
             type="submit"
             disabled={submitting}
-            className="w-full border-2 border-ember bg-ember px-6 py-3 font-label text-sm font-bold uppercase tracking-wide text-cocoa transition hover:bg-cocoa hover:text-ember disabled:opacity-60"
+            className="w-full rounded-full bg-tomato px-6 py-3 text-sm font-bold text-white transition hover:-translate-y-0.5 hover:bg-tomato-dark disabled:opacity-60"
           >
             {submitting ? "Placing order…" : `Place order — ₹${subtotalInr}`}
           </button>
         </form>
 
-        <div className="h-fit border-2 border-outline bg-cocoa-light p-6">
-          <h2 className="font-display text-sm font-extrabold uppercase text-parchment">
-            Order summary
-          </h2>
-          <div className="mt-4 space-y-2">
+        <div className="h-fit rounded-2xl bg-white p-6 shadow-sm">
+          <h2 className="font-display text-sm font-semibold text-espresso">Order summary</h2>
+          <div className="mt-4 space-y-3">
             {items.map((item) => (
-              <div key={item.id} className="flex justify-between text-sm text-parchment/70">
-                <span>
-                  {item.quantity}× {item.name}
-                </span>
-                <span>₹{item.unitPriceInr * item.quantity}</span>
+              <div key={item.id} className="flex items-center gap-3">
+                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-tomato/15 to-golden/20 text-lg">
+                  {emojiForCartItem(item)}
+                </div>
+                <div className="flex flex-1 justify-between text-sm text-espresso/70">
+                  <span>
+                    {item.quantity}× {item.name}
+                  </span>
+                  <span>₹{item.unitPriceInr * item.quantity}</span>
+                </div>
               </div>
             ))}
           </div>
-          <div className="font-label mt-4 flex justify-between border-t-2 border-outline pt-4 text-base font-bold text-parchment">
+          <div className="mt-4 flex justify-between border-t border-espresso/10 pt-4 text-base font-bold text-espresso">
             <span>Total</span>
-            <span className="text-ember">₹{subtotalInr}</span>
+            <span className="text-tomato">₹{subtotalInr}</span>
           </div>
         </div>
       </div>

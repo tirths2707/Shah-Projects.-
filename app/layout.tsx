@@ -1,25 +1,19 @@
 import type { Metadata } from "next";
-import { Anybody, Work_Sans, Space_Grotesk } from "next/font/google";
+import { Fredoka, Work_Sans } from "next/font/google";
 import "./globals.css";
 import { CartProvider } from "@/lib/cart-context";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 
-const anybody = Anybody({
-  variable: "--font-anybody",
+const fredoka = Fredoka({
+  variable: "--font-fredoka",
   subsets: ["latin"],
-  weight: ["700", "800", "900"],
+  weight: ["500", "600", "700"],
 });
 
 const workSans = Work_Sans({
   variable: "--font-work-sans",
   subsets: ["latin"],
-});
-
-const spaceGrotesk = Space_Grotesk({
-  variable: "--font-space-grotesk",
-  subsets: ["latin"],
-  weight: ["500", "700"],
 });
 
 export const metadata: Metadata = {
@@ -34,11 +28,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html
-      lang="en"
-      className={`${anybody.variable} ${workSans.variable} ${spaceGrotesk.variable} h-full antialiased`}
-    >
-      <body className="min-h-full flex flex-col bg-cocoa text-parchment">
+    <html lang="en" className={`${fredoka.variable} ${workSans.variable} h-full antialiased`}>
+      <body className="min-h-full flex flex-col bg-cream text-espresso">
         <CartProvider>
           <Header />
           <main className="flex-1">{children}</main>

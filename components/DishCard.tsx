@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useCart } from "@/lib/cart-context";
+import { accentForDish } from "@/lib/menu-data";
 import type { Dish } from "@/lib/types";
 
 export default function DishCard({ dish }: { dish: Dish }) {
@@ -21,53 +22,65 @@ export default function DishCard({ dish }: { dish: Dish }) {
   }
 
   return (
-    <div className="flex flex-col rounded-lg border-2 border-outline bg-cocoa-light p-5 transition hover:border-ember">
-      <div className="flex items-start justify-between gap-3">
-        <div className="flex items-center gap-2">
-          <span
-            className="flex h-3.5 w-3.5 shrink-0 items-center justify-center border border-sage"
-            aria-label="Vegetarian"
-            title="Vegetarian"
-          >
-            <span className="h-1.5 w-1.5 rounded-full bg-sage" />
-          </span>
-          <h3 className="font-display text-base font-extrabold uppercase leading-snug text-parchment">
-            {dish.name}
-          </h3>
-        </div>
+    <div className="group flex gap-4 rounded-2xl border border-espresso/10 bg-card p-4 shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-xl">
+      {/* Picture */}
+      <div
+        className={`relative flex h-24 w-24 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br ${accentForDish(
+          dish.id,
+        )} text-5xl transition duration-300 group-hover:scale-105`}
+      >
+        <span className="drop-shadow-sm">{dish.emoji}</span>
         {dish.tier === "premium-ritual" && (
-          <span className="font-label shrink-0 bg-ember px-2.5 py-1 text-[11px] font-bold uppercase tracking-wide text-cocoa">
+          <span className="absolute -right-2 -top-2 rounded-full bg-golden px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-espresso shadow">
             Ritual
           </span>
         )}
       </div>
 
-      <p className="mt-2 text-sm text-parchment/70">{dish.filling}</p>
+      {/* Content */}
+      <div className="flex min-w-0 flex-1 flex-col">
+        <div className="flex items-center gap-1.5">
+          <span
+            className="flex h-3 w-3 shrink-0 items-center justify-center rounded-sm border border-basil"
+            aria-label="Vegetarian"
+            title="Vegetarian"
+          >
+            <span className="h-1.5 w-1.5 rounded-full bg-basil" />
+          </span>
+          <h3 className="font-display text-base font-semibold leading-snug text-espresso">
+            {dish.name}
+          </h3>
+        </div>
 
-      <div className="font-label mt-3 flex items-center gap-2 text-xs font-bold uppercase tracking-wide text-amber">
-        <span>{dish.region}</span>
-        <span aria-hidden>&middot;</span>
-        <span>&ldquo;{dish.phrase}&rdquo;</span>
-      </div>
+        <p className="mt-1 line-clamp-2 text-sm text-espresso/60">{dish.filling}</p>
 
-      <p className="mt-3 text-sm text-parchment/60">{dish.story}</p>
+        <div className="mt-2 flex items-center gap-1.5 text-xs font-medium text-tomato">
+          <span>{dish.region}</span>
+          <span aria-hidden>&middot;</span>
+          <span className="italic">&ldquo;{dish.phrase}&rdquo;</span>
+        </div>
 
-      {dish.ritual && (
-        <p className="mt-3 border-l-2 border-ember bg-cocoa px-3 py-2 text-xs text-parchment/80">
-          <span className="font-label font-bold uppercase text-ember">The Ritual: </span>
-          {dish.ritual}
-        </p>
-      )}
+        {dish.ritual && (
+          <p className="mt-2 rounded-lg bg-golden/10 px-2.5 py-1.5 text-xs text-espresso/70">
+            <span className="font-semibold text-tomato-dark">The Ritual: </span>
+            {dish.ritual}
+          </p>
+        )}
 
-      <div className="mt-4 flex items-center justify-between border-t-2 border-outline pt-4">
-        <span className="font-label text-lg font-bold text-parchment">₹{dish.priceInr}</span>
-        <button
-          type="button"
-          onClick={handleAdd}
-          className="border-2 border-ember bg-ember px-4 py-2 font-label text-sm font-bold uppercase tracking-wide text-cocoa transition hover:bg-cocoa hover:text-ember active:scale-95"
-        >
-          {added ? "Added ✓" : "Add to cart"}
-        </button>
+        <div className="mt-auto flex items-center justify-between pt-3">
+          <span className="text-lg font-bold text-espresso">₹{dish.priceInr}</span>
+          <button
+            type="button"
+            onClick={handleAdd}
+            className={`rounded-full px-4 py-1.5 text-sm font-semibold transition active:scale-95 ${
+              added
+                ? "bg-basil text-white"
+                : "bg-tomato text-white hover:bg-tomato-dark"
+            }`}
+          >
+            {added ? "Added ✓" : "Add"}
+          </button>
+        </div>
       </div>
     </div>
   );

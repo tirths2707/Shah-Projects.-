@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useCart } from "@/lib/cart-context";
+import { emojiForCartItem } from "@/lib/menu-data";
 
 export default function CartPage() {
   const { items, updateQuantity, removeItem, subtotalInr } = useCart();
@@ -9,13 +10,14 @@ export default function CartPage() {
   if (items.length === 0) {
     return (
       <div className="mx-auto max-w-3xl px-4 py-20 text-center sm:px-6">
-        <h1 className="font-display text-3xl font-black uppercase text-parchment">
+        <div className="text-5xl">🛒</div>
+        <h1 className="font-display mt-4 text-3xl font-bold text-espresso">
           Your cart is empty
         </h1>
-        <p className="mt-3 text-parchment/60">Add something from the menu to get started.</p>
+        <p className="mt-3 text-espresso/60">Add something from the menu to get started.</p>
         <Link
           href="/menu"
-          className="mt-6 inline-block border-2 border-ember bg-ember px-6 py-3 font-label text-sm font-bold uppercase tracking-wide text-cocoa transition hover:bg-cocoa hover:text-ember"
+          className="mt-6 inline-block rounded-full bg-tomato px-6 py-3 text-sm font-bold text-white transition hover:-translate-y-0.5 hover:bg-tomato-dark"
         >
           Browse the menu
         </Link>
@@ -25,51 +27,51 @@ export default function CartPage() {
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-14 sm:px-6">
-      <h1 className="font-display text-4xl font-black uppercase text-parchment">Your cart</h1>
+      <h1 className="font-display text-4xl font-bold text-espresso">Your cart</h1>
 
-      <div className="mt-8 divide-y-2 divide-outline border-2 border-outline bg-cocoa-light">
+      <div className="mt-8 divide-y divide-espresso/10 rounded-2xl bg-white p-2 shadow-sm">
         {items.map((item) => (
-          <div key={item.id} className="flex items-center gap-4 p-5">
+          <div key={item.id} className="flex items-center gap-4 p-4">
+            <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-tomato/15 to-golden/20 text-2xl">
+              {emojiForCartItem(item)}
+            </div>
+
             <div className="flex-1">
-              <p className="font-display text-sm font-bold uppercase text-parchment">
-                {item.name}
-              </p>
-              {item.detail && (
-                <p className="mt-0.5 text-xs text-parchment/50">{item.detail}</p>
-              )}
-              <p className="font-label mt-1 text-sm text-amber">₹{item.unitPriceInr}</p>
+              <p className="font-display text-sm font-semibold text-espresso">{item.name}</p>
+              {item.detail && <p className="mt-0.5 text-xs text-espresso/50">{item.detail}</p>}
+              <p className="mt-1 text-sm font-medium text-tomato">₹{item.unitPriceInr}</p>
             </div>
 
             <div className="flex items-center gap-2">
               <button
                 type="button"
                 onClick={() => updateQuantity(item.id, item.quantity - 1)}
-                className="h-8 w-8 border-2 border-outline text-parchment transition hover:border-ember"
+                className="h-8 w-8 rounded-full border border-espresso/15 text-espresso transition hover:border-tomato hover:text-tomato"
                 aria-label={`Decrease quantity of ${item.name}`}
               >
                 −
               </button>
-              <span className="w-6 text-center text-sm font-medium text-parchment">
+              <span className="w-6 text-center text-sm font-medium text-espresso">
                 {item.quantity}
               </span>
               <button
                 type="button"
                 onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                className="h-8 w-8 border-2 border-outline text-parchment transition hover:border-ember"
+                className="h-8 w-8 rounded-full border border-espresso/15 text-espresso transition hover:border-tomato hover:text-tomato"
                 aria-label={`Increase quantity of ${item.name}`}
               >
                 +
               </button>
             </div>
 
-            <p className="font-label w-20 text-right text-sm font-bold text-parchment">
+            <p className="w-20 text-right text-sm font-bold text-espresso">
               ₹{item.unitPriceInr * item.quantity}
             </p>
 
             <button
               type="button"
               onClick={() => removeItem(item.id)}
-              className="text-parchment/40 transition hover:text-ember"
+              className="text-espresso/30 transition hover:text-tomato"
               aria-label={`Remove ${item.name}`}
             >
               ✕
@@ -78,23 +80,21 @@ export default function CartPage() {
         ))}
       </div>
 
-      <div className="mt-8 flex items-center justify-between border-2 border-ember bg-cocoa-light px-6 py-5">
-        <span className="font-display text-lg font-extrabold uppercase text-parchment">
-          Subtotal
-        </span>
-        <span className="font-label text-2xl font-bold text-ember">₹{subtotalInr}</span>
+      <div className="mt-8 flex items-center justify-between rounded-2xl bg-golden/15 px-6 py-5">
+        <span className="font-display text-lg font-semibold text-espresso">Subtotal</span>
+        <span className="text-2xl font-bold text-tomato">₹{subtotalInr}</span>
       </div>
 
       <div className="mt-6 flex flex-wrap justify-between gap-4">
         <Link
           href="/menu"
-          className="border-2 border-parchment/30 px-6 py-3 font-label text-sm font-bold uppercase tracking-wide text-parchment transition hover:border-parchment"
+          className="rounded-full border-2 border-espresso/15 px-6 py-3 text-sm font-bold text-espresso transition hover:border-tomato hover:text-tomato"
         >
           Add more items
         </Link>
         <Link
           href="/checkout"
-          className="border-2 border-ember bg-ember px-6 py-3 font-label text-sm font-bold uppercase tracking-wide text-cocoa transition hover:bg-cocoa hover:text-ember"
+          className="rounded-full bg-tomato px-6 py-3 text-sm font-bold text-white transition hover:-translate-y-0.5 hover:bg-tomato-dark"
         >
           Proceed to checkout
         </Link>

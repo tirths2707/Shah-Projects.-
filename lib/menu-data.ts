@@ -4,6 +4,10 @@ import type { BreadFormatInfo, ByoBase, ByoFlavorToss, Dish } from "./types";
 // guide, which only specifies the +₹10-15 Premium Ritual add-on). Swap
 // `priceInr` / `basePriceInr` / `addOnInr` for real numbers once pricing is
 // locked for the Nadiad location.
+//
+// `emoji` is a stand-in for real food photography — no external image host
+// is reachable from this build environment. Swap each card's icon for a
+// real photo later by adding an `image` field and using it in DishCard.
 
 export const breadFormats: BreadFormatInfo[] = [
   {
@@ -11,18 +15,21 @@ export const breadFormats: BreadFormatInfo[] = [
     label: "Classic Grilled Sandwich",
     description: "Sliced bread, triangle-cut",
     basePriceInr: 89,
+    emoji: "🥪",
   },
   {
     id: "pita-pocket",
     label: "Pita Pocket",
     description: "Signature pressed format",
     basePriceInr: 99,
+    emoji: "🫓",
   },
   {
     id: "sub-roll",
     label: "Sub Roll",
     description: "Hero-sized, loaded",
     basePriceInr: 139,
+    emoji: "🥖",
   },
 ];
 
@@ -38,6 +45,7 @@ export const dishes: Dish[] = [
     phrase: "Amchi Mumbai",
     story: "The sandwich born on Mumbai's street corners, sold from carts since the 1970s.",
     priceInr: 89,
+    emoji: "🥔",
   },
   {
     id: "paneer-tikka-blaze",
@@ -49,6 +57,7 @@ export const dishes: Dish[] = [
     phrase: "Rangla Punjab",
     story: "The tandoor tradition, grilled and golden, no clay oven required.",
     priceInr: 89,
+    emoji: "🔥",
   },
   {
     id: "cheese-chutney-melt",
@@ -62,6 +71,7 @@ export const dishes: Dish[] = [
     ritual:
       "Comes with a food-safe Cheese Vial (syringe) and a marked slit in the sandwich — press the plunger yourself before the first bite.",
     priceInr: 104,
+    emoji: "🧀",
   },
   {
     id: "corn-cheese-toast",
@@ -73,6 +83,7 @@ export const dishes: Dish[] = [
     phrase: "Amchi Mumbai",
     story: "A monsoon-season favorite from Mumbai's roadside stalls.",
     priceInr: 89,
+    emoji: "🌽",
   },
   {
     id: "schezwan-veggie-toast",
@@ -84,6 +95,7 @@ export const dishes: Dish[] = [
     phrase: "Amchi Mumbai",
     story: "India's love affair with Indo-Chinese flavor.",
     priceInr: 89,
+    emoji: "🥢",
   },
   {
     id: "tandoori-veggie-grill",
@@ -95,6 +107,7 @@ export const dishes: Dish[] = [
     phrase: "Rangla Punjab",
     story: "Smoky clay-oven flavor, brought to bread.",
     priceInr: 89,
+    emoji: "🥕",
   },
 
   // Section 2 — Pita Pocket
@@ -108,6 +121,7 @@ export const dishes: Dish[] = [
     phrase: "Rangla Punjab",
     story: "Punjab's tandoor tradition, folded and sealed.",
     priceInr: 99,
+    emoji: "🍢",
   },
   {
     id: "chickpea-pocket",
@@ -119,6 +133,7 @@ export const dishes: Dish[] = [
     phrase: "Khaana Khaya?",
     story: "A protein-packed staple across North Indian homes.",
     priceInr: 99,
+    emoji: "🫘",
   },
   {
     id: "tofu-bhurji-pocket",
@@ -130,6 +145,7 @@ export const dishes: Dish[] = [
     phrase: "Khaana Khaya?",
     story: "A modern, plant-based twist on classic egg bhurji.",
     priceInr: 99,
+    emoji: "🍳",
   },
   {
     id: "dal-makhani-fold",
@@ -143,6 +159,7 @@ export const dishes: Dish[] = [
     ritual:
       'Wrapped in parchment sealed with a wax-look sticker stamped "M" — peel it to reveal the story card underneath.',
     priceInr: 114,
+    emoji: "🍲",
   },
   {
     id: "achari-paneer-pocket",
@@ -154,6 +171,7 @@ export const dishes: Dish[] = [
     phrase: "Padharo Mhare Desh",
     story: "The tang of Rajasthan's pickle culture, aged in brine for generations.",
     priceInr: 99,
+    emoji: "🥒",
   },
 
   // Section 3 — Sub Roll
@@ -167,6 +185,7 @@ export const dishes: Dish[] = [
     phrase: "Rangla Punjab",
     story: "A hearty, full-size take on the classic tikka.",
     priceInr: 139,
+    emoji: "🫑",
   },
   {
     id: "schezwan-paneer-sub",
@@ -178,6 +197,7 @@ export const dishes: Dish[] = [
     phrase: "Amchi Mumbai",
     story: "Indo-Chinese heat, sub-sized.",
     priceInr: 139,
+    emoji: "🥡",
   },
   {
     id: "chickpea-peri-peri-sub",
@@ -189,6 +209,7 @@ export const dishes: Dish[] = [
     phrase: "Kitem Re?",
     story: "Peri-peri arrived in India through Goa's Portuguese trade history.",
     priceInr: 139,
+    emoji: "🌶️",
   },
   {
     id: "dal-makhani-loaded-sub",
@@ -201,6 +222,7 @@ export const dishes: Dish[] = [
     story: "Punjab's richest comfort food, loaded into a hero-sized sub.",
     ritual: 'Sealed with a wax sticker stamped "Loaded" — the brand\'s signature hero-item mark.',
     priceInr: 154,
+    emoji: "🍛",
   },
   {
     id: "tandoori-veg-sub",
@@ -212,6 +234,7 @@ export const dishes: Dish[] = [
     phrase: "Rangla Punjab",
     story: "The tandoor tradition, sub-sized.",
     priceInr: 139,
+    emoji: "🔥",
   },
 ];
 
@@ -265,6 +288,24 @@ export const byoFlavorTosses: ByoFlavorToss[] = [
   },
 ];
 
+const accentClasses = [
+  "from-tomato/25 to-golden/25",
+  "from-basil/20 to-golden/25",
+  "from-golden/25 to-tomato/20",
+];
+
+export function accentForDish(id: string): string {
+  let hash = 0;
+  for (let i = 0; i < id.length; i++) hash = (hash * 31 + id.charCodeAt(i)) >>> 0;
+  return accentClasses[hash % accentClasses.length];
+}
+
 export function dishesByFormat(format: Dish["format"]) {
   return dishes.filter((d) => d.format === format);
+}
+
+export function emojiForCartItem(item: { id: string; format: Dish["format"] }): string {
+  const dish = dishes.find((d) => d.id === item.id);
+  if (dish) return dish.emoji;
+  return breadFormats.find((f) => f.id === item.format)?.emoji ?? "🥪";
 }

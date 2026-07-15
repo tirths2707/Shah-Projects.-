@@ -15,13 +15,10 @@ export default function Header() {
   const [open, setOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-40 border-b-2 border-outline bg-cocoa/95 backdrop-blur">
+    <header className="sticky top-0 z-40 border-b border-espresso/10 bg-cream/90 backdrop-blur">
       <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4 sm:px-6">
-        <Link
-          href="/"
-          className="font-display text-xl font-extrabold uppercase tracking-tight text-parchment"
-        >
-          SnackIt
+        <Link href="/" className="font-display flex items-center gap-1.5 text-xl font-bold text-espresso">
+          <span className="text-2xl">🥪</span> SnackIt
         </Link>
 
         <nav className="hidden items-center gap-8 md:flex">
@@ -29,7 +26,7 @@ export default function Header() {
             <Link
               key={link.href}
               href={link.href}
-              className="font-label text-sm font-bold uppercase tracking-wide text-parchment/70 transition hover:text-ember"
+              className="text-sm font-semibold text-espresso/70 transition hover:text-tomato"
             >
               {link.label}
             </Link>
@@ -39,18 +36,18 @@ export default function Header() {
         <div className="flex items-center gap-3">
           <Link
             href="/cart"
-            className="relative bg-ember px-4 py-2 font-label text-sm font-bold uppercase tracking-wide text-cocoa transition hover:bg-parchment"
+            className="relative rounded-full bg-tomato px-4 py-2 text-sm font-semibold text-white transition hover:bg-tomato-dark"
           >
             Cart
             {itemCount > 0 && (
-              <span className="absolute -right-2 -top-2 flex h-5 w-5 items-center justify-center bg-sage text-xs font-bold text-parchment">
+              <span className="absolute -right-2 -top-2 flex h-5 w-5 animate-bounce items-center justify-center rounded-full bg-basil text-xs font-bold text-white">
                 {itemCount}
               </span>
             )}
           </Link>
           <button
             type="button"
-            className="p-2 text-parchment md:hidden"
+            className="rounded-md p-2 text-espresso md:hidden"
             aria-label="Toggle menu"
             onClick={() => setOpen((v) => !v)}
           >
@@ -62,12 +59,12 @@ export default function Header() {
       </div>
 
       {open && (
-        <nav className="flex flex-col gap-1 border-t-2 border-outline px-4 pb-4 md:hidden">
+        <nav className="flex flex-col gap-1 border-t border-espresso/10 px-4 pb-4 md:hidden">
           {navLinks.map((link) => (
             <Link
               key={link.href}
               href={link.href}
-              className="font-label px-2 py-2 text-sm font-bold uppercase tracking-wide text-parchment/70 hover:text-ember"
+              className="rounded-md px-2 py-2 text-sm font-semibold text-espresso/70 hover:bg-tomato/5 hover:text-tomato"
               onClick={() => setOpen(false)}
             >
               {link.label}

@@ -30,32 +30,33 @@ export default function BuildYourOwnPage() {
     setTimeout(() => setAdded(false), 1200);
   }
 
+  const optionClass = (active: boolean) =>
+    `rounded-2xl border-2 px-4 py-3 text-left text-sm font-semibold transition hover:-translate-y-0.5 ${
+      active
+        ? "border-tomato bg-tomato text-white shadow-md shadow-tomato/30"
+        : "border-espresso/10 bg-white text-espresso hover:border-tomato/40"
+    }`;
+
   return (
     <div className="mx-auto max-w-4xl px-4 py-14 sm:px-6">
-      <h1 className="font-display text-4xl font-black uppercase text-parchment sm:text-5xl">
+      <h1 className="font-display text-4xl font-bold text-espresso sm:text-5xl">
         Build Your Own
       </h1>
-      <p className="mt-3 max-w-2xl text-parchment/70">
+      <p className="mt-3 max-w-2xl text-espresso/60">
         Pick a base, a bread format, and a flavor toss. Every combination still gets a story.
       </p>
 
       <div className="mt-10 space-y-10">
         {/* Step 1 — Base */}
         <section>
-          <h2 className="font-display text-lg font-extrabold uppercase text-parchment">
-            Step 1 — Base
-          </h2>
+          <h2 className="font-display text-lg font-semibold text-espresso">Step 1 — Base</h2>
           <div className="mt-4 grid gap-3 sm:grid-cols-2">
             {byoBases.map((b) => (
               <button
                 key={b.id}
                 type="button"
                 onClick={() => setBaseId(b.id)}
-                className={`border-2 px-4 py-3 text-left font-label text-sm font-bold uppercase tracking-wide transition ${
-                  baseId === b.id
-                    ? "border-ember bg-ember text-cocoa"
-                    : "border-outline bg-cocoa-light text-parchment hover:border-parchment/50"
-                }`}
+                className={optionClass(baseId === b.id)}
               >
                 {b.label}
               </button>
@@ -65,25 +66,22 @@ export default function BuildYourOwnPage() {
 
         {/* Step 2 — Bread */}
         <section>
-          <h2 className="font-display text-lg font-extrabold uppercase text-parchment">
-            Step 2 — Bread
-          </h2>
+          <h2 className="font-display text-lg font-semibold text-espresso">Step 2 — Bread</h2>
           <div className="mt-4 grid gap-3 sm:grid-cols-3">
             {breadFormats.map((f) => (
               <button
                 key={f.id}
                 type="button"
                 onClick={() => setFormatId(f.id)}
-                className={`border-2 px-4 py-3 text-left font-label text-sm font-bold uppercase tracking-wide transition ${
-                  formatId === f.id
-                    ? "border-ember bg-ember text-cocoa"
-                    : "border-outline bg-cocoa-light text-parchment hover:border-parchment/50"
-                }`}
+                className={optionClass(formatId === f.id)}
               >
-                <div>{f.label}</div>
+                <div className="flex items-center gap-2">
+                  <span className="text-xl">{f.emoji}</span>
+                  <span>{f.label}</span>
+                </div>
                 <div
-                  className={`mt-1 text-xs font-normal normal-case ${
-                    formatId === f.id ? "text-cocoa/70" : "text-parchment/50"
+                  className={`mt-1 text-xs font-normal ${
+                    formatId === f.id ? "text-white/70" : "text-espresso/50"
                   }`}
                 >
                   ₹{f.basePriceInr}
@@ -95,7 +93,7 @@ export default function BuildYourOwnPage() {
 
         {/* Step 3 — Flavor toss */}
         <section>
-          <h2 className="font-display text-lg font-extrabold uppercase text-parchment">
+          <h2 className="font-display text-lg font-semibold text-espresso">
             Step 3 — Flavor toss
           </h2>
           <div className="mt-4 grid gap-3 sm:grid-cols-2">
@@ -104,30 +102,26 @@ export default function BuildYourOwnPage() {
                 key={f.id}
                 type="button"
                 onClick={() => setFlavorId(f.id)}
-                className={`border-2 px-4 py-3 text-left transition ${
-                  flavorId === f.id
-                    ? "border-ember bg-ember text-cocoa"
-                    : "border-outline bg-cocoa-light text-parchment hover:border-parchment/50"
-                }`}
+                className={optionClass(flavorId === f.id)}
               >
-                <div className="flex items-center justify-between font-label text-sm font-bold uppercase tracking-wide">
+                <div className="flex items-center justify-between font-semibold">
                   <span>{f.label}</span>
                   {f.addOnInr > 0 && (
-                    <span className={flavorId === f.id ? "text-cocoa" : "text-amber"}>
+                    <span className={flavorId === f.id ? "text-golden" : "text-tomato"}>
                       +₹{f.addOnInr}
                     </span>
                   )}
                 </div>
                 <div
-                  className={`mt-1 text-xs normal-case italic ${
-                    flavorId === f.id ? "text-cocoa/70" : "text-parchment/50"
+                  className={`mt-1 text-xs italic ${
+                    flavorId === f.id ? "text-white/70" : "text-espresso/50"
                   }`}
                 >
                   {f.region} &middot; &ldquo;{f.phrase}&rdquo;
                 </div>
                 <div
-                  className={`mt-1 text-xs normal-case ${
-                    flavorId === f.id ? "text-cocoa/60" : "text-parchment/50"
+                  className={`mt-1 text-xs ${
+                    flavorId === f.id ? "text-white/60" : "text-espresso/50"
                   }`}
                 >
                   {f.ritual}
@@ -139,19 +133,27 @@ export default function BuildYourOwnPage() {
       </div>
 
       {/* Summary */}
-      <div className="mt-12 rounded-lg border-2 border-outline bg-cocoa-light p-6">
-        <h3 className="font-display text-lg font-extrabold uppercase text-parchment">
-          Your creation
-        </h3>
-        <p className="mt-2 text-sm text-parchment/70">
-          {base.label} in a {format.label}, tossed in {flavor.label}.
-        </p>
-        <div className="mt-4 flex items-center justify-between border-t-2 border-outline pt-4">
-          <span className="font-label text-2xl font-bold text-parchment">₹{totalPrice}</span>
+      <div className="mt-12 flex flex-col gap-6 rounded-2xl bg-white p-6 shadow-lg sm:flex-row sm:items-center">
+        <div
+          key={formatId}
+          className="animate-float flex h-24 w-24 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-tomato/20 to-golden/25 text-5xl"
+        >
+          {format.emoji}
+        </div>
+        <div className="flex-1">
+          <h3 className="font-display text-lg font-semibold text-espresso">Your creation</h3>
+          <p className="mt-1 text-sm text-espresso/60">
+            {base.label} in a {format.label}, tossed in {flavor.label}.
+          </p>
+        </div>
+        <div className="flex items-center justify-between gap-4 border-t border-espresso/10 pt-4 sm:border-t-0 sm:pt-0">
+          <span className="text-2xl font-bold text-espresso">₹{totalPrice}</span>
           <button
             type="button"
             onClick={handleAdd}
-            className="border-2 border-ember bg-ember px-6 py-3 font-label text-sm font-bold uppercase tracking-wide text-cocoa transition hover:bg-cocoa hover:text-ember active:scale-95"
+            className={`rounded-full px-6 py-3 text-sm font-bold text-white transition active:scale-95 ${
+              added ? "bg-basil" : "bg-tomato hover:bg-tomato-dark"
+            }`}
           >
             {added ? "Added ✓" : "Add to cart"}
           </button>

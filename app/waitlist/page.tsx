@@ -30,19 +30,19 @@ export default function WaitlistPage() {
   }
 
   const inputClass =
-    "mt-1 w-full border-0 border-b-2 border-parchment/30 bg-transparent px-1 py-2 text-sm text-parchment outline-none focus:border-ember";
-  const labelClass = "font-label block text-xs font-bold uppercase tracking-wide text-parchment/70";
+    "mt-1 w-full rounded-xl border-2 border-espresso/10 bg-cream px-3 py-2.5 text-sm text-espresso outline-none transition focus:border-tomato";
+  const labelClass = "block text-xs font-bold uppercase tracking-wide text-espresso/50";
 
   if (status === "success") {
     return (
       <div className="mx-auto max-w-xl px-4 py-24 text-center sm:px-6">
-        <div className="mx-auto flex h-16 w-16 items-center justify-center border-2 border-sage bg-cocoa-light text-2xl font-bold text-sage">
-          ✓
+        <div className="animate-float mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-basil/15 text-4xl">
+          🎉
         </div>
-        <h1 className="mt-6 font-display text-4xl font-black uppercase text-parchment">
+        <h1 className="font-display mt-6 text-4xl font-bold text-espresso">
           You&rsquo;re on the list
         </h1>
-        <p className="mt-3 text-parchment/60">
+        <p className="mt-3 text-espresso/60">
           We&rsquo;ll let you know the moment SnackIt opens in Nadiad.
         </p>
       </div>
@@ -51,14 +51,12 @@ export default function WaitlistPage() {
 
   return (
     <div className="mx-auto max-w-xl px-4 py-20 sm:px-6">
-      <h1 className="font-display text-4xl font-black uppercase text-parchment">
-        Join the waitlist
-      </h1>
-      <p className="mt-3 text-parchment/60">
+      <h1 className="font-display text-4xl font-bold text-espresso">Join the waitlist</h1>
+      <p className="mt-3 text-espresso/60">
         Be the first to know when SnackIt opens in Nadiad, Gujarat.
       </p>
 
-      <form onSubmit={handleSubmit} className="mt-8 space-y-6">
+      <form onSubmit={handleSubmit} className="mt-8 space-y-5">
         <div>
           <label htmlFor="w-name" className={labelClass}>
             Name
@@ -112,7 +110,7 @@ export default function WaitlistPage() {
         </div>
 
         {status === "error" && (
-          <p className="text-sm text-ember">
+          <p className="text-sm text-tomato">
             Something went wrong — that email may already be on the list, or try again.
           </p>
         )}
@@ -120,7 +118,7 @@ export default function WaitlistPage() {
         <button
           type="submit"
           disabled={submitting}
-          className="w-full border-2 border-ember bg-ember px-6 py-3 font-label text-sm font-bold uppercase tracking-wide text-cocoa transition hover:bg-cocoa hover:text-ember disabled:opacity-60"
+          className="w-full rounded-full bg-tomato px-6 py-3 text-sm font-bold text-white transition hover:-translate-y-0.5 hover:bg-tomato-dark disabled:opacity-60"
         >
           {submitting ? "Joining…" : "Join the waitlist"}
         </button>
