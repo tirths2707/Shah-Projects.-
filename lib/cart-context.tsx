@@ -14,6 +14,23 @@ import type { RegionId } from "./regions";
 
 const STORAGE_KEY = "snackit-cart";
 
+// Guards against stale localStorage carts from before unitPrice became a
+// per-region object (it used to be a single unitPriceInr number) — without
+// this, an old cached cart crashes price rendering on every page that reads
+// unitPrice[regionId].
+function isValidCartLineItem(value: unknown): value is CartLineItem {
+  if (!value || typeof value !== "object") return false;
+  const item = value as Partial<CartLineItem>;
+  return (
+    typeof item.id === "string" &&
+    typeof item.unitPrice === "object" &&
+    item.unitPrice !== null &&
+    typeof item.unitPrice["nadiad-in" as keyof typeof item.unitPrice] === "number" &&
+    typeof item.unitPrice["calgary-ca" as keyof typeof item.unitPrice] === "number" &&
+    typeof item.quantity === "number"
+  );
+}
+
 export function cartSubtotal(items: CartLineItem[], regionId: RegionId): number {
   return items.reduce((sum, i) => sum + i.unitPrice[regionId] * i.quantity, 0);
 }
@@ -38,8 +55,12 @@ export function CartProvider({ children }: { children: ReactNode }) {
     // initialized from it during SSR without a hydration mismatch.
     try {
       const stored = window.localStorage.getItem(STORAGE_KEY);
-      // eslint-disable-next-line react-hooks/set-state-in-effect
-      if (stored) setItems(JSON.parse(stored));
+      if (stored) {
+        const parsed = JSON.parse(stored);
+        const valid = Array.isArray(parsed) ? parsed.filter(isValidCartLineItem) : [];
+        // eslint-disable-next-line react-hooks/set-state-in-effect
+        if (valid.length) setItems(valid);
+      }
     } catch {
       // ignore corrupted storage
     }
