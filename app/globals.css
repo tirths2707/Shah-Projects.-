@@ -1,0 +1,35 @@
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #26123f;
+
+  /* SnackIt brand palette (screen-optimized values from brand guide) */
+  --color-plum: #26123f;
+  --color-crust: #b8763a;
+  --color-lime: #c4ea3f;
+  --color-mustard: #e8c25d;
+  --color-pink: #e85d8a;
+  --color-cream: #f3eaf7;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+
+  --color-plum: var(--color-plum);
+  --color-crust: var(--color-crust);
+  --color-lime: var(--color-lime);
+  --color-mustard: var(--color-mustard);
+  --color-pink: var(--color-pink);
+  --color-cream: var(--color-cream);
+
+  --font-display: var(--font-unbounded);
+  --font-sans: var(--font-inter);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-inter), Arial, Helvetica, sans-serif;
+}
