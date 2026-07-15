@@ -36,29 +36,31 @@ export default function CheckoutContent() {
       return;
     }
 
-    const { data: order, error: insertError } = await supabase
-      .from("orders")
-      .insert({
-        customer_name: name,
-        phone,
-        email: email || null,
-        items,
-        subtotal,
-        total: subtotal,
-        special_instructions: notes || null,
-        region: regionId,
-        currency: region.currency,
-        pickup_location: region.label,
-        payment_status: region.paymentMode === "online" ? "pending" : "unpaid",
-      })
-      .select()
-      .single();
+    // Generate the order ID client-side so we don't need to read the row
+    // back with `.select()` — anon has INSERT permission on `orders` but not
+    // SELECT (orders stay private), and an insert+select would be rejected.
+    const orderId = crypto.randomUUID();
 
-    if (insertError || !order) {
+    const { error: insertError } = await supabase.from("orders").insert({
+      id: orderId,
+      customer_name: name,
+      phone,
+      email: email || null,
+      items,
+      subtotal,
+      total: subtotal,
+      special_instructions: notes || null,
+      region: regionId,
+      currency: region.currency,
+      pickup_location: region.label,
+      payment_status: region.paymentMode === "online" ? "pending" : "unpaid",
+    });
+
+    if (insertError) {
       // Logged (not shown to the customer) so the site owner can check
       // browser devtools for the real Supabase error — RLS denial, network
       // failure, and schema mismatch all land here otherwise indistinguishable.
-      if (insertError) console.error("Order insert failed:", insertError);
+      console.error("Order insert failed:", insertError);
       setSubmitting(false);
       setError("Something went wrong placing your order. Please try again.");
       return;
@@ -75,7 +77,7 @@ export default function CheckoutContent() {
       const res = await fetch("/api/checkout/session", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ orderId: order.id, items, regionId }),
+        body: JSON.stringify({ orderId, items, regionId }),
       });
       const data = await res.json();
       if (!res.ok || !data.url) throw new Error(data.error ?? "Could not start payment.");
