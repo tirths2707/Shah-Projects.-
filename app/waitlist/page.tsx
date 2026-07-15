@@ -30,13 +30,13 @@ export default function WaitlistPage() {
   }
 
   const inputClass =
-    "mt-1 w-full rounded-xl border-2 border-espresso/10 bg-cream px-3 py-2.5 text-sm text-espresso outline-none transition focus:border-tomato";
+    "mt-1 w-full rounded-xl border-2 border-espresso/10 bg-cream px-3 py-2.5 text-sm text-espresso outline-none transition focus:border-coral";
   const labelClass = "block text-xs font-bold uppercase tracking-wide text-espresso/50";
 
   if (status === "success") {
     return (
       <div className="mx-auto max-w-xl px-4 py-24 text-center sm:px-6">
-        <div className="animate-float mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-basil/15 text-4xl">
+        <div className="animate-pop mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-basil/15 text-4xl">
           🎉
         </div>
         <h1 className="font-display mt-6 text-4xl font-bold text-espresso">
@@ -110,7 +110,7 @@ export default function WaitlistPage() {
         </div>
 
         {status === "error" && (
-          <p className="text-sm text-tomato">
+          <p className="text-sm text-coral">
             Something went wrong — that email may already be on the list, or try again.
           </p>
         )}
@@ -118,7 +118,7 @@ export default function WaitlistPage() {
         <button
           type="submit"
           disabled={submitting}
-          className="w-full rounded-full bg-tomato px-6 py-3 text-sm font-bold text-white transition hover:-translate-y-0.5 hover:bg-tomato-dark disabled:opacity-60"
+          className="w-full rounded-full bg-coral px-6 py-3 text-sm font-bold text-white transition hover:-translate-y-0.5 hover:bg-coral-dark disabled:opacity-60"
         >
           {submitting ? "Joining…" : "Join the waitlist"}
         </button>

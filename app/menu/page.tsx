@@ -1,5 +1,6 @@
 import DishCard from "@/components/DishCard";
 import Reveal from "@/components/Reveal";
+import { FormatIcon } from "@/components/icons";
 import { breadFormats, dishesByFormat } from "@/lib/menu-data";
 
 export const metadata = {
@@ -23,7 +24,9 @@ export default function MenuPage() {
       {breadFormats.map((format) => (
         <section key={format.id} className="mt-14">
           <div className="flex items-center gap-3 border-b-2 border-espresso/10 pb-4">
-            <span className="text-3xl">{format.emoji}</span>
+            <span className="flex h-10 w-10 items-center justify-center rounded-full bg-coral/8">
+              <FormatIcon format={format.id} className="h-5 w-5 text-coral" />
+            </span>
             <div>
               <h2 className="font-display text-2xl font-semibold text-espresso">
                 {format.label}

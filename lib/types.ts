@@ -13,7 +13,6 @@ export interface Dish {
   story: string;
   ritual?: string;
   priceInr: number;
-  emoji: string;
 }
 
 export interface BreadFormatInfo {
@@ -21,7 +20,6 @@ export interface BreadFormatInfo {
   label: string;
   description: string;
   basePriceInr: number;
-  emoji: string;
 }
 
 export interface ByoBase {

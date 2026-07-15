@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useState } from "react";
 import { useCart } from "@/lib/cart-context";
+import { SandwichIcon } from "@/components/icons";
 
 const navLinks = [
   { href: "/menu", label: "Menu" },
@@ -17,8 +18,12 @@ export default function Header() {
   return (
     <header className="sticky top-0 z-40 border-b border-espresso/10 bg-cream/90 backdrop-blur">
       <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4 sm:px-6">
-        <Link href="/" className="font-display flex items-center gap-1.5 text-xl font-bold text-espresso">
-          <span className="text-2xl">🥪</span> SnackIt
+        <Link
+          href="/"
+          className="font-display flex items-center gap-2 text-xl font-bold text-espresso"
+        >
+          <SandwichIcon className="h-6 w-6 text-coral" />
+          SnackIt
         </Link>
 
         <nav className="hidden items-center gap-8 md:flex">
@@ -26,9 +31,10 @@ export default function Header() {
             <Link
               key={link.href}
               href={link.href}
-              className="text-sm font-semibold text-espresso/70 transition hover:text-tomato"
+              className="group relative text-sm font-semibold text-espresso/70 transition hover:text-espresso"
             >
               {link.label}
+              <span className="absolute -bottom-1 left-0 h-0.5 w-0 bg-coral transition-all duration-300 group-hover:w-full" />
             </Link>
           ))}
         </nav>
@@ -36,11 +42,14 @@ export default function Header() {
         <div className="flex items-center gap-3">
           <Link
             href="/cart"
-            className="relative rounded-full bg-tomato px-4 py-2 text-sm font-semibold text-white transition hover:bg-tomato-dark"
+            className="relative rounded-full bg-espresso px-4 py-2 text-sm font-semibold text-white transition hover:bg-coral"
           >
             Cart
             {itemCount > 0 && (
-              <span className="absolute -right-2 -top-2 flex h-5 w-5 animate-bounce items-center justify-center rounded-full bg-basil text-xs font-bold text-white">
+              <span
+                key={itemCount}
+                className="animate-pop absolute -right-2 -top-2 flex h-5 w-5 items-center justify-center rounded-full bg-coral text-xs font-bold text-white"
+              >
                 {itemCount}
               </span>
             )}
@@ -64,7 +73,7 @@ export default function Header() {
             <Link
               key={link.href}
               href={link.href}
-              className="rounded-md px-2 py-2 text-sm font-semibold text-espresso/70 hover:bg-tomato/5 hover:text-tomato"
+              className="rounded-md px-2 py-2 text-sm font-semibold text-espresso/70 hover:bg-coral/5 hover:text-coral"
               onClick={() => setOpen(false)}
             >
               {link.label}

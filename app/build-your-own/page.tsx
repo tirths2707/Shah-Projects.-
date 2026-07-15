@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react";
 import { useCart } from "@/lib/cart-context";
 import { breadFormats, byoBases, byoFlavorTosses } from "@/lib/menu-data";
+import { FormatIcon } from "@/components/icons";
 
 export default function BuildYourOwnPage() {
   const { addItem } = useCart();
@@ -31,10 +32,10 @@ export default function BuildYourOwnPage() {
   }
 
   const optionClass = (active: boolean) =>
-    `rounded-2xl border-2 px-4 py-3 text-left text-sm font-semibold transition hover:-translate-y-0.5 ${
+    `rounded-xl border px-4 py-3 text-left text-sm font-semibold transition duration-300 hover:-translate-y-0.5 ${
       active
-        ? "border-tomato bg-tomato text-white shadow-md shadow-tomato/30"
-        : "border-espresso/10 bg-white text-espresso hover:border-tomato/40"
+        ? "border-espresso bg-espresso text-white shadow-md shadow-espresso/20"
+        : "border-espresso/10 bg-white text-espresso hover:border-coral/40"
     }`;
 
   return (
@@ -76,7 +77,10 @@ export default function BuildYourOwnPage() {
                 className={optionClass(formatId === f.id)}
               >
                 <div className="flex items-center gap-2">
-                  <span className="text-xl">{f.emoji}</span>
+                  <FormatIcon
+                    format={f.id}
+                    className={`h-5 w-5 ${formatId === f.id ? "text-white" : "text-coral"}`}
+                  />
                   <span>{f.label}</span>
                 </div>
                 <div
@@ -107,7 +111,7 @@ export default function BuildYourOwnPage() {
                 <div className="flex items-center justify-between font-semibold">
                   <span>{f.label}</span>
                   {f.addOnInr > 0 && (
-                    <span className={flavorId === f.id ? "text-golden" : "text-tomato"}>
+                    <span className={flavorId === f.id ? "text-white" : "text-coral"}>
                       +₹{f.addOnInr}
                     </span>
                   )}
@@ -136,9 +140,9 @@ export default function BuildYourOwnPage() {
       <div className="mt-12 flex flex-col gap-6 rounded-2xl bg-white p-6 shadow-lg sm:flex-row sm:items-center">
         <div
           key={formatId}
-          className="animate-float flex h-24 w-24 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-tomato/20 to-golden/25 text-5xl"
+          className="animate-mesh flex h-24 w-24 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-coral/12 via-cream to-basil/10 transition-transform duration-500"
         >
-          {format.emoji}
+          <FormatIcon format={formatId} className="h-10 w-10 text-espresso/30" />
         </div>
         <div className="flex-1">
           <h3 className="font-display text-lg font-semibold text-espresso">Your creation</h3>
@@ -152,7 +156,7 @@ export default function BuildYourOwnPage() {
             type="button"
             onClick={handleAdd}
             className={`rounded-full px-6 py-3 text-sm font-bold text-white transition active:scale-95 ${
-              added ? "bg-basil" : "bg-tomato hover:bg-tomato-dark"
+              added ? "bg-basil" : "bg-coral hover:bg-coral-dark"
             }`}
           >
             {added ? "Added ✓" : "Add to cart"}

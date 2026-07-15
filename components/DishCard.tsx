@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useCart } from "@/lib/cart-context";
 import { accentForDish } from "@/lib/menu-data";
+import { FormatIcon } from "@/components/icons";
 import type { Dish } from "@/lib/types";
 
 export default function DishCard({ dish }: { dish: Dish }) {
@@ -22,16 +23,19 @@ export default function DishCard({ dish }: { dish: Dish }) {
   }
 
   return (
-    <div className="group flex gap-4 rounded-2xl border border-espresso/10 bg-card p-4 shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-xl">
+    <div className="group flex gap-4 rounded-2xl border border-espresso/8 bg-card p-4 shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-espresso/5">
       {/* Picture */}
       <div
-        className={`relative flex h-24 w-24 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br ${accentForDish(
+        className={`animate-mesh relative flex h-24 w-24 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-gradient-to-br ${accentForDish(
           dish.id,
-        )} text-5xl transition duration-300 group-hover:scale-105`}
+        )}`}
       >
-        <span className="drop-shadow-sm">{dish.emoji}</span>
+        <FormatIcon
+          format={dish.format}
+          className="h-10 w-10 text-espresso/25 transition duration-300 group-hover:scale-110 group-hover:text-espresso/35"
+        />
         {dish.tier === "premium-ritual" && (
-          <span className="absolute -right-2 -top-2 rounded-full bg-golden px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-espresso shadow">
+          <span className="absolute right-1.5 top-1.5 rounded-full bg-espresso px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider text-white">
             Ritual
           </span>
         )}
@@ -52,17 +56,17 @@ export default function DishCard({ dish }: { dish: Dish }) {
           </h3>
         </div>
 
-        <p className="mt-1 line-clamp-2 text-sm text-espresso/60">{dish.filling}</p>
+        <p className="mt-1 line-clamp-2 text-sm text-espresso/55">{dish.filling}</p>
 
-        <div className="mt-2 flex items-center gap-1.5 text-xs font-medium text-tomato">
+        <div className="mt-2 flex items-center gap-1.5 text-xs font-medium text-coral">
           <span>{dish.region}</span>
           <span aria-hidden>&middot;</span>
           <span className="italic">&ldquo;{dish.phrase}&rdquo;</span>
         </div>
 
         {dish.ritual && (
-          <p className="mt-2 rounded-lg bg-golden/10 px-2.5 py-1.5 text-xs text-espresso/70">
-            <span className="font-semibold text-tomato-dark">The Ritual: </span>
+          <p className="mt-2 rounded-lg bg-espresso/[0.04] px-2.5 py-1.5 text-xs text-espresso/65">
+            <span className="font-semibold text-espresso">The Ritual: </span>
             {dish.ritual}
           </p>
         )}
@@ -73,9 +77,7 @@ export default function DishCard({ dish }: { dish: Dish }) {
             type="button"
             onClick={handleAdd}
             className={`rounded-full px-4 py-1.5 text-sm font-semibold transition active:scale-95 ${
-              added
-                ? "bg-basil text-white"
-                : "bg-tomato text-white hover:bg-tomato-dark"
+              added ? "bg-basil text-white" : "bg-coral text-white hover:bg-coral-dark"
             }`}
           >
             {added ? "Added ✓" : "Add"}
