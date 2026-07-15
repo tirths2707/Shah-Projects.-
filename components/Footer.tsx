@@ -1,11 +1,16 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { SandwichIcon } from "@/components/icons";
 import { useRegion } from "@/lib/region-context";
 
 export default function Footer() {
   const { region } = useRegion();
+  const pathname = usePathname();
+
+  // Staff tools (/pos, /admin) get their own chrome — hide the customer footer.
+  if (pathname.startsWith("/pos") || pathname.startsWith("/admin")) return null;
 
   return (
     <footer className="border-t border-espresso/10 bg-espresso text-cream">

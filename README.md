@@ -45,7 +45,22 @@ Set these in your hosting provider's dashboard (Vercel project settings) for pro
 - `/checkout` — customer details; Nadiad places an order for pay-in-store pickup, Calgary redirects to Stripe Checkout
 - `/order-confirmed` — confirmation screen; for Calgary, confirms the Stripe session and marks the order paid
 - `/waitlist` — pre-launch signup, tags each signup with the visitor's detected market (`source` column) for visibility into where traffic comes from
-- `/admin` — password-gated live order dashboard for the owner/kitchen. Polls every 5s and animates new orders in as they arrive. Reads orders server-side via the service-role key (never exposes order data to the public browser client) — requires `SUPABASE_SERVICE_ROLE_KEY` and `ADMIN_PASSWORD`, and shows a "not configured" message until both are set. Excluded from search indexing.
+- `/admin` — password-gated live order dashboard for the owner/kitchen. Polls every 5s and animates new orders in as they arrive. Reads orders server-side via the service-role key (never exposes order data to the public browser client) — requires `SUPABASE_SERVICE_ROLE_KEY` and `ADMIN_PASSWORD`, and shows a "not configured" message until both are set. Excluded from search indexing. (Superseded by `/pos` for day-to-day use; kept as a quick read-only view.)
+- `/pos` — full point-of-sale for staff, gated by real Supabase Auth logins:
+  - **Live orders** — kitchen display of active online + counter orders with New → Preparing → Ready → Complete status buttons; polls every 5s and highlights new arrivals.
+  - **New order** — walk-in counter register: tap the menu to build an order, currency toggle, submit as a paid counter order.
+  - **Today** — order counts (total / online / counter) and revenue per market.
+  - `/pos/login` is the sign-in page. Uses the existing publishable key (no new env var). Reads/writes go through the logged-in staff session, enforced by RLS (`authenticated` role can read/insert/update orders; anonymous website customers still can't read anything). Excluded from search indexing.
+
+## POS / staff setup
+
+The POS needs at least one staff login. In the Supabase Dashboard:
+
+1. **Authentication → Providers** — confirm the **Email** provider is enabled (it is by default).
+2. **Authentication → Users → Add user** — enter an email + password for each staff member, and check **"Auto Confirm User"** (so they can sign in immediately without an email confirmation link).
+3. Staff go to `/pos/login` and sign in with those credentials.
+
+No new environment variables are required — the POS authenticates with the same publishable key already configured. RLS was set up (migration `pos_order_channel_and_staff_rls`) so only logged-in staff can read/manage orders.
 
 ## Region system
 
