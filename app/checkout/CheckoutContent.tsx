@@ -5,7 +5,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { useCart, cartSubtotal } from "@/lib/cart-context";
 import { useRegion } from "@/lib/region-context";
-import { supabase } from "@/lib/supabase";
+import { supabase, isSupabaseConfigured } from "@/lib/supabase";
 import { formatPrice } from "@/lib/regions";
 import { FormatIcon } from "@/components/icons";
 
@@ -28,6 +28,14 @@ export default function CheckoutContent() {
     setSubmitting(true);
     setError(null);
 
+    if (!isSupabaseConfigured) {
+      setSubmitting(false);
+      setError(
+        "Ordering isn't connected yet (missing Supabase configuration on this deployment). This is a setup issue, not something wrong with your order — please contact the site owner.",
+      );
+      return;
+    }
+
     const { data: order, error: insertError } = await supabase
       .from("orders")
       .insert({
@@ -47,6 +55,10 @@ export default function CheckoutContent() {
       .single();
 
     if (insertError || !order) {
+      // Logged (not shown to the customer) so the site owner can check
+      // browser devtools for the real Supabase error — RLS denial, network
+      // failure, and schema mismatch all land here otherwise indistinguishable.
+      if (insertError) console.error("Order insert failed:", insertError);
       setSubmitting(false);
       setError("Something went wrong placing your order. Please try again.");
       return;

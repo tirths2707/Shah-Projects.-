@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { supabase } from "@/lib/supabase";
+import { supabase, isSupabaseConfigured } from "@/lib/supabase";
 import { useRegion } from "@/lib/region-context";
 
 export default function WaitlistContent() {
@@ -11,12 +11,18 @@ export default function WaitlistContent() {
   const [phone, setPhone] = useState("");
   const [city, setCity] = useState("");
   const [submitting, setSubmitting] = useState(false);
-  const [status, setStatus] = useState<"idle" | "success" | "error">("idle");
+  const [status, setStatus] = useState<"idle" | "success" | "error" | "config">("idle");
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setSubmitting(true);
     setStatus("idle");
+
+    if (!isSupabaseConfigured) {
+      setSubmitting(false);
+      setStatus("config");
+      return;
+    }
 
     const { error } = await supabase.from("waitlist_signups").insert({
       name,
@@ -31,6 +37,7 @@ export default function WaitlistContent() {
       source: `website-${regionId}`,
     });
 
+    if (error) console.error("Waitlist insert failed:", error);
     setSubmitting(false);
     setStatus(error ? "error" : "success");
   }
@@ -118,6 +125,13 @@ export default function WaitlistContent() {
         {status === "error" && (
           <p className="text-sm text-coral">
             Something went wrong — that email may already be on the list, or try again.
+          </p>
+        )}
+        {status === "config" && (
+          <p className="text-sm text-coral">
+            The waitlist isn&rsquo;t connected yet (missing Supabase configuration on this
+            deployment). This is a setup issue, not something wrong with your info — please
+            contact the site owner.
           </p>
         )}
 
