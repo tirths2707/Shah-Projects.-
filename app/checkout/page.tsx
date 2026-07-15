@@ -43,13 +43,19 @@ export default function CheckoutPage() {
     router.push("/order-confirmed");
   }
 
+  const inputClass =
+    "mt-1 w-full border-0 border-b-2 border-parchment/30 bg-transparent px-1 py-2 text-sm text-parchment outline-none focus:border-ember";
+  const labelClass = "font-label block text-xs font-bold uppercase tracking-wide text-parchment/70";
+
   if (items.length === 0) {
     return (
       <div className="mx-auto max-w-3xl px-4 py-20 text-center sm:px-6">
-        <h1 className="font-display text-3xl font-extrabold text-plum">Your cart is empty</h1>
+        <h1 className="font-display text-3xl font-black uppercase text-parchment">
+          Your cart is empty
+        </h1>
         <Link
           href="/menu"
-          className="mt-6 inline-block rounded-full bg-plum px-6 py-3 text-sm font-semibold text-cream transition hover:bg-plum/90"
+          className="mt-6 inline-block border-2 border-ember bg-ember px-6 py-3 font-label text-sm font-bold uppercase tracking-wide text-cocoa transition hover:bg-cocoa hover:text-ember"
         >
           Browse the menu
         </Link>
@@ -59,15 +65,15 @@ export default function CheckoutPage() {
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-14 sm:px-6">
-      <h1 className="font-display text-3xl font-extrabold text-plum">Checkout</h1>
-      <p className="mt-2 text-sm text-plum/70">
+      <h1 className="font-display text-4xl font-black uppercase text-parchment">Checkout</h1>
+      <p className="mt-2 text-sm text-parchment/60">
         Orders are for pickup at our Nadiad, Gujarat location. Pay in-store on collection.
       </p>
 
       <div className="mt-8 grid gap-10 md:grid-cols-[1.5fr_1fr]">
-        <form onSubmit={handleSubmit} className="space-y-5">
+        <form onSubmit={handleSubmit} className="space-y-6">
           <div>
-            <label htmlFor="name" className="block text-sm font-medium text-plum">
+            <label htmlFor="name" className={labelClass}>
               Name
             </label>
             <input
@@ -75,12 +81,12 @@ export default function CheckoutPage() {
               required
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="mt-1 w-full rounded-lg border border-plum/20 bg-white px-3 py-2 text-sm text-plum outline-none focus:border-plum"
+              className={inputClass}
             />
           </div>
 
           <div>
-            <label htmlFor="phone" className="block text-sm font-medium text-plum">
+            <label htmlFor="phone" className={labelClass}>
               Phone number
             </label>
             <input
@@ -89,12 +95,12 @@ export default function CheckoutPage() {
               required
               value={phone}
               onChange={(e) => setPhone(e.target.value)}
-              className="mt-1 w-full rounded-lg border border-plum/20 bg-white px-3 py-2 text-sm text-plum outline-none focus:border-plum"
+              className={inputClass}
             />
           </div>
 
           <div>
-            <label htmlFor="email" className="block text-sm font-medium text-plum">
+            <label htmlFor="email" className={labelClass}>
               Email (optional)
             </label>
             <input
@@ -102,12 +108,12 @@ export default function CheckoutPage() {
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="mt-1 w-full rounded-lg border border-plum/20 bg-white px-3 py-2 text-sm text-plum outline-none focus:border-plum"
+              className={inputClass}
             />
           </div>
 
           <div>
-            <label htmlFor="notes" className="block text-sm font-medium text-plum">
+            <label htmlFor="notes" className={labelClass}>
               Special instructions (optional)
             </label>
             <textarea
@@ -115,26 +121,28 @@ export default function CheckoutPage() {
               rows={3}
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
-              className="mt-1 w-full rounded-lg border border-plum/20 bg-white px-3 py-2 text-sm text-plum outline-none focus:border-plum"
+              className={inputClass}
             />
           </div>
 
-          {error && <p className="text-sm text-pink">{error}</p>}
+          {error && <p className="text-sm text-ember">{error}</p>}
 
           <button
             type="submit"
             disabled={submitting}
-            className="w-full rounded-full bg-plum px-6 py-3 text-sm font-semibold text-cream transition hover:bg-plum/90 disabled:opacity-60"
+            className="w-full border-2 border-ember bg-ember px-6 py-3 font-label text-sm font-bold uppercase tracking-wide text-cocoa transition hover:bg-cocoa hover:text-ember disabled:opacity-60"
           >
             {submitting ? "Placing order…" : `Place order — ₹${subtotalInr}`}
           </button>
         </form>
 
-        <div className="h-fit rounded-2xl border border-plum/10 bg-white p-6">
-          <h2 className="font-display text-sm font-bold text-plum">Order summary</h2>
+        <div className="h-fit border-2 border-outline bg-cocoa-light p-6">
+          <h2 className="font-display text-sm font-extrabold uppercase text-parchment">
+            Order summary
+          </h2>
           <div className="mt-4 space-y-2">
             {items.map((item) => (
-              <div key={item.id} className="flex justify-between text-sm text-plum/80">
+              <div key={item.id} className="flex justify-between text-sm text-parchment/70">
                 <span>
                   {item.quantity}× {item.name}
                 </span>
@@ -142,9 +150,9 @@ export default function CheckoutPage() {
               </div>
             ))}
           </div>
-          <div className="mt-4 flex justify-between border-t border-plum/10 pt-4 font-display text-base font-bold text-plum">
+          <div className="font-label mt-4 flex justify-between border-t-2 border-outline pt-4 text-base font-bold text-parchment">
             <span>Total</span>
-            <span>₹{subtotalInr}</span>
+            <span className="text-ember">₹{subtotalInr}</span>
           </div>
         </div>
       </div>

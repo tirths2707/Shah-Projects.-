@@ -1,19 +1,25 @@
 import type { Metadata } from "next";
-import { Unbounded, Inter } from "next/font/google";
+import { Anybody, Work_Sans, Space_Grotesk } from "next/font/google";
 import "./globals.css";
 import { CartProvider } from "@/lib/cart-context";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 
-const unbounded = Unbounded({
-  variable: "--font-unbounded",
+const anybody = Anybody({
+  variable: "--font-anybody",
   subsets: ["latin"],
-  weight: ["600", "700", "800"],
+  weight: ["700", "800", "900"],
 });
 
-const inter = Inter({
-  variable: "--font-inter",
+const workSans = Work_Sans({
+  variable: "--font-work-sans",
   subsets: ["latin"],
+});
+
+const spaceGrotesk = Space_Grotesk({
+  variable: "--font-space-grotesk",
+  subsets: ["latin"],
+  weight: ["500", "700"],
 });
 
 export const metadata: Metadata = {
@@ -30,9 +36,9 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${unbounded.variable} ${inter.variable} h-full antialiased`}
+      className={`${anybody.variable} ${workSans.variable} ${spaceGrotesk.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col bg-cream text-plum">
+      <body className="min-h-full flex flex-col bg-cocoa text-parchment">
         <CartProvider>
           <Header />
           <main className="flex-1">{children}</main>

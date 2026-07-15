@@ -1,35 +1,42 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #26123f;
+  --background: #1c110e;
+  --foreground: #f5efe1;
 
-  /* SnackIt brand palette (screen-optimized values from brand guide) */
-  --color-plum: #26123f;
-  --color-crust: #b8763a;
-  --color-lime: #c4ea3f;
-  --color-mustard: #e8c25d;
-  --color-pink: #e85d8a;
-  --color-cream: #f3eaf7;
+  /* "Ember Harvest" — fusion of Visceral Craving (dark/bold/fiery) and
+     Terra Organic (warm/earthy/grounded). See globals.css comment below. */
+  --color-cocoa: #1c110e;
+  --color-cocoa-light: #2a1f1a;
+  --color-cocoa-lighter: #372a22;
+  --color-ember: #ef4423;
+  --color-sage: #4a7c59;
+  --color-amber: #c98a4b;
+  --color-parchment: #f5efe1;
+  --color-outline: #5c403a;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
 
-  --color-plum: var(--color-plum);
-  --color-crust: var(--color-crust);
-  --color-lime: var(--color-lime);
-  --color-mustard: var(--color-mustard);
-  --color-pink: var(--color-pink);
-  --color-cream: var(--color-cream);
+  --color-cocoa: var(--color-cocoa);
+  --color-cocoa-light: var(--color-cocoa-light);
+  --color-cocoa-lighter: var(--color-cocoa-lighter);
+  --color-ember: var(--color-ember);
+  --color-sage: var(--color-sage);
+  --color-amber: var(--color-amber);
+  --color-parchment: var(--color-parchment);
+  --color-outline: var(--color-outline);
 
-  --font-display: var(--font-unbounded);
-  --font-sans: var(--font-inter);
+  --font-display: var(--font-anybody);
+  --font-sans: var(--font-work-sans);
+  --font-label: var(--font-space-grotesk);
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-inter), Arial, Helvetica, sans-serif;
+  font-family: var(--font-work-sans), Arial, Helvetica, sans-serif;
+  line-height: 1.6;
 }
