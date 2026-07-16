@@ -18,8 +18,8 @@ export default function Header() {
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
 
-  // Staff tools (/pos, /admin) get their own chrome — hide the customer nav.
-  if (pathname.startsWith("/pos") || pathname.startsWith("/admin")) return null;
+  // The staff POS gets its own chrome — hide the customer nav.
+  if (pathname.startsWith("/pos")) return null;
 
   return (
     <header className="sticky top-0 z-40 border-b border-espresso/10 bg-cream/90 backdrop-blur">

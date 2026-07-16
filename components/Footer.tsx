@@ -9,8 +9,8 @@ export default function Footer() {
   const { region } = useRegion();
   const pathname = usePathname();
 
-  // Staff tools (/pos, /admin) get their own chrome — hide the customer footer.
-  if (pathname.startsWith("/pos") || pathname.startsWith("/admin")) return null;
+  // The staff POS gets its own chrome — hide the customer footer.
+  if (pathname.startsWith("/pos")) return null;
 
   return (
     <footer className="border-t border-espresso/10 bg-espresso text-cream">

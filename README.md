@@ -45,7 +45,6 @@ Set these in your hosting provider's dashboard (Vercel project settings) for pro
 - `/checkout` — customer details; Nadiad places an order for pay-in-store pickup, Calgary redirects to Stripe Checkout
 - `/order-confirmed` — confirmation screen; for Calgary, confirms the Stripe session and marks the order paid
 - `/waitlist` — pre-launch signup, tags each signup with the visitor's detected market (`source` column) for visibility into where traffic comes from
-- `/admin` — password-gated live order dashboard for the owner/kitchen. Polls every 5s and animates new orders in as they arrive. Reads orders server-side via the service-role key (never exposes order data to the public browser client) — requires `SUPABASE_SERVICE_ROLE_KEY` and `ADMIN_PASSWORD`, and shows a "not configured" message until both are set. Excluded from search indexing. (Superseded by `/pos` for day-to-day use; kept as a quick read-only view.)
 - `/pos` — full point-of-sale for staff, gated by real Supabase Auth logins:
   - **Live orders** — kitchen display of active online + counter orders with New → Preparing → Ready → Complete status buttons; polls every 5s and highlights new arrivals.
   - **New order** — walk-in counter register: tap the menu to build an order, currency toggle, submit as a paid counter order.
