@@ -4,6 +4,7 @@ import Link from "next/link";
 import DishCard from "@/components/DishCard";
 import Reveal from "@/components/Reveal";
 import StatCounter from "@/components/StatCounter";
+import HeroShowcase from "@/components/HeroShowcase";
 import { useRegion } from "@/lib/region-context";
 import { dishes } from "@/lib/menu-data";
 
@@ -45,33 +46,39 @@ export default function Home() {
           }}
         />
 
-        <div className="relative mx-auto max-w-6xl px-4 py-24 text-center sm:px-6 sm:py-32">
-          <p className="inline-flex items-center gap-2 rounded-full border border-espresso/10 bg-white px-4 py-1.5 text-xs font-semibold uppercase tracking-wide text-espresso/70">
-            <span className="h-1.5 w-1.5 rounded-full bg-basil" />
-            {region.label} &middot; 100% Vegetarian
-          </p>
-          <h1 className="font-display mt-6 text-5xl font-bold leading-[1.05] text-espresso sm:text-7xl">
-            Craving something
-            <br />
-            <span className="text-coral">real?</span>
-          </h1>
-          <p className="mx-auto mt-6 max-w-xl text-lg text-espresso/60">
-            That&rsquo;s SnackIt — quick-serve sandwiches with a story behind every bite. Grilled,
-            pocketed, or loaded into a sub. Pick a signature dish, or build your own.
-          </p>
-          <div className="mt-8 flex flex-wrap justify-center gap-4">
-            <Link
-              href="/menu"
-              className="rounded-full bg-espresso px-7 py-3.5 text-sm font-semibold text-white shadow-lg shadow-espresso/10 transition duration-300 hover:-translate-y-0.5 hover:bg-coral hover:shadow-xl hover:shadow-coral/20"
-            >
-              See the menu
-            </Link>
-            <Link
-              href="/build-your-own"
-              className="rounded-full border border-espresso/15 bg-white px-7 py-3.5 text-sm font-semibold text-espresso transition duration-300 hover:-translate-y-0.5 hover:border-coral hover:text-coral"
-            >
-              Build your own
-            </Link>
+        <div className="relative mx-auto grid max-w-6xl items-center gap-12 px-4 py-20 sm:px-6 sm:py-28 md:grid-cols-2">
+          <div className="text-center md:text-left">
+            <p className="inline-flex items-center gap-2 rounded-full border border-espresso/10 bg-white px-4 py-1.5 text-xs font-semibold uppercase tracking-wide text-espresso/70">
+              <span className="h-1.5 w-1.5 rounded-full bg-basil" />
+              {region.label} &middot; 100% Vegetarian
+            </p>
+            <h1 className="font-display mt-6 text-5xl font-bold leading-[1.05] text-espresso sm:text-7xl">
+              Craving something
+              <br />
+              <span className="text-coral">real?</span>
+            </h1>
+            <p className="mx-auto mt-6 max-w-xl text-lg text-espresso/60 md:mx-0">
+              That&rsquo;s SnackIt — quick-serve sandwiches with a story behind every bite. Grilled,
+              pocketed, or loaded into a sub. Pick a signature dish, or build your own.
+            </p>
+            <div className="mt-8 flex flex-wrap justify-center gap-4 md:justify-start">
+              <Link
+                href="/menu"
+                className="rounded-full bg-espresso px-7 py-3.5 text-sm font-semibold text-white shadow-lg shadow-espresso/10 transition duration-300 hover:-translate-y-0.5 hover:bg-coral hover:shadow-xl hover:shadow-coral/20"
+              >
+                See the menu
+              </Link>
+              <Link
+                href="/build-your-own"
+                className="rounded-full border border-espresso/15 bg-white px-7 py-3.5 text-sm font-semibold text-espresso transition duration-300 hover:-translate-y-0.5 hover:border-coral hover:text-coral"
+              >
+                Build your own
+              </Link>
+            </div>
+          </div>
+
+          <div className="pb-6 md:pb-0">
+            <HeroShowcase />
           </div>
         </div>
 
